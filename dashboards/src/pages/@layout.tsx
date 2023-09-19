@@ -149,7 +149,7 @@ export default function Layout() {
         </DrawerHeader>
         <Divider />
         <List>
-          {["Dashboard", "Marketers", "Adverts", "My Details"].map(
+          {["Dashboard", "My Marketers", "My Adverts", "My Details"].map(
             (text, index) => (
               <MyListItem
                 uniqueText={text}

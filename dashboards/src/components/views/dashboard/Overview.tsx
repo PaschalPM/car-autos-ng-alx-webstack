@@ -15,19 +15,19 @@ const overviewElements: {label:string, num:number, link:string, icon:React.React
     {
         label: 'Total Marketers',
         num: 5,
-        link: urlPath('Marketers'),
+        link: urlPath('My Marketers'),
         icon: <BsFillPeopleFill size={24} color={"#666"} />
     },
     {
         label: 'Total Adverts',
         num: 200,
-        link: urlPath('Adverts'),
+        link: urlPath('My Adverts'),
         icon: <RiAdvertisementFill size={24} color={"#666"}/>
     },
     {
         label: 'Inactive Adverts',
         num: 100,
-        link: urlPath('Adverts'),
+        link: urlPath('My Adverts'),
         icon: <RiAdvertisementFill size={24} color={"#666"}/>
     },
 

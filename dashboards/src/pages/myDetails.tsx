@@ -78,14 +78,44 @@ export default function MyDetails() {
     }, 3000);
   }, []);
 
+  type HandleSubmit = React.FormEventHandler<HTMLFormElement>;
+
+  const handleSubmit: HandleSubmit = (ev) => {
+    ev.preventDefault();
+    const target = ev.target as HTMLFormElement & {
+      firstname: HTMLInputElement;
+      lastname: HTMLInputElement;
+      username: HTMLInputElement;
+      email: HTMLInputElement;
+      password: HTMLInputElement;
+      group: HTMLInputElement;
+    };
+    const body = {} as UserValues;
+    body.firstname = target.firstname.value as string;
+    body.lastname = target.lastname.value as string;
+    body.username = target.username.value as string;
+    body.email = target.email.value as string;
+    body.password = target.password.value as string;
+    body.group = target.group.value as string;
+
+    validationSchema
+      .validate(body)
+      .then((value) => {
+        console.log(value);
+      })
+      .catch((e: Yup.ValidationError) => {
+        console.log(e.name);
+      });
+  };
   return (
     <>
+
       <LoadingSpinner condition={initialValues.username === "..."} />
 
       <Typography variant="h5"> Update My Details</Typography>
       <Divider sx={{ marginBottom: 2 }} />
 
-      <form action="">
+      <form action="" onSubmit={handleSubmit}>
         <Box
           sx={{
             display: "flex",
@@ -169,6 +199,7 @@ export default function MyDetails() {
             variant="contained"
             size="small"
             color="inherit"
+            type="submit"
             disabled={
               initialValues.username === "..." ||
               !hasFormChanged(initialValuesJSON, initialValues)

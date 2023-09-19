@@ -1,5 +1,5 @@
 export const urlPath = (uniqueText: string) => {
-  const basePath = "/manager/dashboard/";
+  const basePath = "/dashboard/";
   uniqueText = uniqueText.replace(/\s/g, "-").toLowerCase();
 
   if (uniqueText === "dashboard") return basePath;

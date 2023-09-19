@@ -12,10 +12,10 @@ import MyDetails from "./myDetails";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-  <Route path="/manager/dashboard/" element={<Layout/>}>
+  <Route path="/dashboard/" element={<Layout/>}>
     <Route index element={<Dashboard/>}/>
-    <Route path="marketers" element={<Marketers/>}/>
-    <Route path="adverts" element={<Adverts/>}/>
+    <Route path="my-marketers" element={<Marketers/>}/>
+    <Route path="my-adverts" element={<Adverts/>}/>
     <Route path="my-details" element={<MyDetails/>}/>
 </Route>));
 
