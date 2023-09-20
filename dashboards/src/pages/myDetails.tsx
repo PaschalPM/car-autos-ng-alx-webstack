@@ -3,15 +3,21 @@ import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 import Save from "@mui/icons-material/Save";
 
 import LoadingSpinner from "../components/LoadingSpinner";
 import PasswordField from "../components/PasswordField";
-import { baseColor } from "../libs/utils";
+import { baseColor, ucfirst } from "../libs/utils";
 import { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { hasFormChanged } from "../libs/utils";
+import Error from "../components/alerts/Error";
+import _ from "lodash";
+import { handleSubmit } from "../libs/snippets/myDetails";
 
 const MyTextField = ({
   label,
@@ -44,6 +50,7 @@ const MyTextField = ({
     }}
   />
 );
+
 export default function MyDetails() {
   const [initialValuesJSON, setInitialValuesJSON] = useState<string>("");
   const [initialValues, setInitialValues] = useState<UserValues>({
@@ -51,17 +58,12 @@ export default function MyDetails() {
     lastname: "...",
     username: "...",
     email: "...",
+    phoneNumber: "...",
     password: "...",
-    group: "Manager",
   });
-
-  const validationSchema = Yup.object({
-    firstname: Yup.string().required().min(3),
-    lastname: Yup.string().required().min(3),
-    username: Yup.string().required().min(3),
-    email: Yup.string().email().required(),
-    password: Yup.string().required().min(8),
-  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [readyData, setReadyData] = useState<UserValues>({} as UserValues);
+  const [submissionError, setSubmissionError] = useState("");
 
   useEffect(() => {
     setTimeout(() => {
@@ -70,6 +72,7 @@ export default function MyDetails() {
         lastname: "Okafor",
         username: "pasmac",
         email: "okaforpaschal018@gmail.com",
+        phoneNumber: "07031102089",
         password: "123456789",
       };
       setInitialValues(user);
@@ -78,44 +81,52 @@ export default function MyDetails() {
     }, 3000);
   }, []);
 
-  type HandleSubmit = React.FormEventHandler<HTMLFormElement>;
-
-  const handleSubmit: HandleSubmit = (ev) => {
-    ev.preventDefault();
-    const target = ev.target as HTMLFormElement & {
-      firstname: HTMLInputElement;
-      lastname: HTMLInputElement;
-      username: HTMLInputElement;
-      email: HTMLInputElement;
-      password: HTMLInputElement;
-      group: HTMLInputElement;
-    };
-    const body = {} as UserValues;
-    body.firstname = target.firstname.value as string;
-    body.lastname = target.lastname.value as string;
-    body.username = target.username.value as string;
-    body.email = target.email.value as string;
-    body.password = target.password.value as string;
-    body.group = target.group.value as string;
-
-    validationSchema
-      .validate(body)
-      .then((value) => {
-        console.log(value);
-      })
-      .catch((e: Yup.ValidationError) => {
-        console.log(e.name);
-      });
-  };
   return (
     <>
-
       <LoadingSpinner condition={initialValues.username === "..."} />
-
+      <Error
+        errorMessageState={submissionError}
+        handleClose={() => {
+          setSubmissionError("");
+          setIsSubmitting(false);
+        }}
+      />
+      <Snackbar
+        message={"Submitting form..."}
+        open={!_.isEmpty(readyData)}
+        autoHideDuration={5000}
+        action={
+          <Button
+            onClick={() => {
+              setReadyData({} as UserValues);
+              setIsSubmitting(false);
+            }}
+          >
+            undo
+          </Button>
+        }
+        onClose={() => {
+          alert(JSON.stringify(readyData));
+          setIsSubmitting(false);
+          setReadyData({} as UserValues);
+        }}
+      />
       <Typography variant="h5"> Update My Details</Typography>
       <Divider sx={{ marginBottom: 2 }} />
 
-      <form action="" onSubmit={handleSubmit}>
+      <form
+        action=""
+        onSubmit={(ev) =>
+          handleSubmit(
+            ev,
+            () => setIsSubmitting(true),
+            (value) => {
+              setReadyData(value);
+            },
+            (reason) => setSubmissionError(reason)
+          )
+        }
+      >
         <Box
           sx={{
             display: "flex",
@@ -173,26 +184,31 @@ export default function MyDetails() {
               }))
             }
           />
+
+          <MyTextField
+            label="Phone number"
+            name="phoneNumber"
+            initialValue={initialValues.phoneNumber}
+            onChange={(ev) =>
+              setInitialValues((v) => ({
+                ...v,
+                phoneNumber: ev.target.value as string,
+              }))
+            }
+          />
           <PasswordField
             name="password"
             sx={{
               flexGrow: 1,
               flexBasis: "350px",
             }}
-            value={initialValues.password}
+            value={initialValues.password as string}
             onChange={(ev) =>
               setInitialValues((v) => ({
                 ...v,
                 password: ev.target.value as string,
               }))
             }
-          />
-
-          <MyTextField
-            label="Group"
-            disabled={true}
-            name="group"
-            initialValue={"Manager"}
           />
 
           <Button
@@ -202,7 +218,8 @@ export default function MyDetails() {
             type="submit"
             disabled={
               initialValues.username === "..." ||
-              !hasFormChanged(initialValuesJSON, initialValues)
+              !hasFormChanged(initialValuesJSON, initialValues) ||
+              isSubmitting
             }
             sx={{
               backgroundColor: baseColor,
@@ -214,7 +231,14 @@ export default function MyDetails() {
             }}
             startIcon={<Save />}
           >
-            Save changes
+            {!isSubmitting ? (
+              <>Save changes</>
+            ) : (
+              <>
+                <span style={{ marginRight: "8px" }}> Saving changes </span>
+                <CircularProgress size={15} sx={{ color: "#a6a6a6" }} />
+              </>
+            )}
           </Button>
         </Box>
       </form>

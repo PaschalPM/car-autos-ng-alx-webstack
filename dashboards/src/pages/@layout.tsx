@@ -171,7 +171,7 @@ export default function Layout() {
             uniqueText="Logout"
             open={open}
             ListItemMainIcon={<Logout />}
-            color="#B11226"
+            color="gray"
           />
         </List>
       </Drawer>

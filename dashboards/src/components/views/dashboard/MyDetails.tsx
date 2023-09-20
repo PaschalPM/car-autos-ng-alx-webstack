@@ -10,6 +10,7 @@ import { FiUser } from "react-icons/fi";
 import { AiOutlineMail } from "react-icons/ai";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { TiGroupOutline } from "react-icons/ti";
+import { GiVibratingSmartphone } from "react-icons/gi";
 import { Link } from "react-router-dom";
 
 const Item = ({ Icon, text }: { Icon: React.ReactNode; text: string }) => (
@@ -37,6 +38,7 @@ export default function MyDetails() {
         </Typography>
         <Item Icon={<FiUser />} text={"pasmac"} />
         <Item Icon={<AiOutlineMail />} text={"okaforpaschal018@gmail.com"} />
+        <Item Icon={<GiVibratingSmartphone />} text={"07031102089"} />
         <Item Icon={<RiLockPasswordLine />} text={"**********"} />
         <Item Icon={<TiGroupOutline />} text={"manager"} />
         <Button

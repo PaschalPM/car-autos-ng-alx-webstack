@@ -17,6 +17,7 @@ export default function Dashboard() {
         <Grid item xs={12} md={8}>
           <OverviewCard />
           <RecentActivitiesCard />
+          
         </Grid>
         <Grid item xs={12} md={4}>
           <MyDetailsCard/>

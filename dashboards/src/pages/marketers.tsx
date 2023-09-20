@@ -26,7 +26,7 @@ export default function Marketers() {
         open={state}
         autoHideDuration={5000}
         onClose={handleClose}
-        action={<button onClick={()=>{setState2(false); setState(false)}}>Fuck</button>}
+        action={<button onClick={()=>{setState(false)}}>Fuck</button>}
         anchorOrigin={{ 
           horizontal: 'right',
           vertical: 'bottom'

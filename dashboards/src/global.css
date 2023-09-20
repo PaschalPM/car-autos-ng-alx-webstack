@@ -1,4 +1,27 @@
-a{
-    all:unset;
+a {
+    all: unset;
     cursor: pointer;
+}
+
+/* Webkit (Chrome, Safari) */
+/* Note: Chrome, Safari, and newer Edge versions use Webkit properties. */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(103, 99, 59);
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(131, 126, 77);
+}
+
+body {
+    /* Firefox */
+    /* Note: Firefox uses the scrollbar-color property. */
+    /* You may need to add !important to override Firefox's default styles. */
+    scrollbar-color: rgba(103, 99, 59)rgba(199, 184, 45, 0.10);
+    scrollbar-width: thin;
 }

@@ -52,6 +52,7 @@ export default function Overview() {
         >
           {overviewElements.map(({label, num, link, icon}) => (
             <Paper
+              key={label}
               elevation={0}
               sx={{
                 display: "flex",
