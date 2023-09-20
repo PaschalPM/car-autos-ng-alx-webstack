@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 if getenv('ENVIRONMENT') == 'production':
-    load_dotenv(path.join(BASE_DIR, '.env.production'))
+    load_dotenv(path.join(BASE_DIR.parent, '.env.production'))
 else:
     load_dotenv()
 
