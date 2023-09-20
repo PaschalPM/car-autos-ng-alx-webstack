@@ -16,13 +16,14 @@ from datetime import timedelta
 from dotenv import load_dotenv
 
 
-if getenv('ENVIRONMENT') == 'production':
-    load_dotenv('.env.production')
-else:
-    load_dotenv()
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+if getenv('ENVIRONMENT') == 'production':
+    load_dotenv(path.join(BASE_DIR, '.env.production'))
+else:
+    load_dotenv()
 
 
 # Quick-start development settings - unsuitable for production
@@ -34,7 +35,7 @@ SECRET_KEY = getenv('PROJECT_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-#ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+# ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -118,10 +119,10 @@ DATABASES = {
     }
 }
 
-#Update costom user
+# Update costom user
 AUTH_USER_MODEL = 'car_app.User'
 
-#Password hashers
+# Password hashers
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
 ]
@@ -170,7 +171,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 email_host_password = getenv('EMAIL_HOST_PASSWORD')
 email_host_user = getenv('EMAIL_HOST_USER')
 
