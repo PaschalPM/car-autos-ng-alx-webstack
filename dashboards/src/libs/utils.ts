@@ -1,7 +1,10 @@
+import _ from "lodash"
+
 export const urlPath = (uniqueText: string) => {
   const basePath = "/dashboard/";
   uniqueText = uniqueText.replace(/\s/g, "-").toLowerCase();
 
+  if (uniqueText === "home") return "/"
   if (uniqueText === "dashboard") return basePath;
 
   return basePath + uniqueText;
@@ -12,8 +15,8 @@ export const isPathActive = (location:string, urlPath:string) => {
     return location === urlPath
 }
 
-export const hasFormChanged = (json:string, obj:any) => {
-  return !(json === JSON.stringify(obj))
+export const hasFormChanged = <T>(initialObj:T, newObj:T) => {
+  return !(_.isEqual(initialObj, newObj))
 }
 
 export const ucfirst = (str:string) => str.slice(0,1).toUpperCase()+str.slice(1).toLowerCase()

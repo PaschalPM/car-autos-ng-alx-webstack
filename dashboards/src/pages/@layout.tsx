@@ -21,6 +21,8 @@ import { RiAdvertisementFill } from "react-icons/ri";
 import { AiFillProfile } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
 import MyListItem from "../components/MyListItem";
+import useAppStore from "../store/app";
+import { ucfirst } from "../libs/utils";
 
 const drawerWidth = 240;
 
@@ -96,6 +98,7 @@ const Drawer = styled(MuiDrawer, {
 export default function Layout() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const {username} = useAppStore((state)=>state.userProfile)
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -132,7 +135,7 @@ export default function Layout() {
           <Typography color="rgba(103, 99, 59)" noWrap component="div">
             <Typography variant="caption">Welcome Back!</Typography>
             <Typography variant="h6" color="rgba(103, 99, 59)" mt={-1}>
-              {"<user>"}
+              {ucfirst(username)}
             </Typography>
           </Typography>
         </Toolbar>

@@ -7,7 +7,10 @@ import RecentActivitiesCard from "../components/views/dashboard/RecentActivities
 import MyDetailsCard from "../components/views/dashboard/MyDetails";
 
 
+
 export default function Dashboard() {
+  
+  
   return (
     <>
       <Typography variant="h5">Dashboard</Typography>

@@ -110,7 +110,7 @@ export default function RecentActivities() {
                               idx
                             )}`,
                             fontWeight: `${idx === 0 || idx === 3 ? "700" : ""}`,
-                            fontSize: '0.85rem'
+                            fontSize: '0.75rem'
                           }}
                           {...cell.getCellProps()}
                         >

@@ -12,6 +12,8 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import { TiGroupOutline } from "react-icons/ti";
 import { GiVibratingSmartphone } from "react-icons/gi";
 import { Link } from "react-router-dom";
+import useAppStore from "../../../store/app";
+
 
 const Item = ({ Icon, text }: { Icon: React.ReactNode; text: string }) => (
   <Box
@@ -27,6 +29,7 @@ const Item = ({ Icon, text }: { Icon: React.ReactNode; text: string }) => (
   </Box>
 );
 export default function MyDetails() {
+  const state = useAppStore((state)=> state.userProfile)
   return (
     <Card>
       <CardContent>
@@ -34,13 +37,13 @@ export default function MyDetails() {
           My Details
         </Typography>
         <Typography gutterBottom sx={{ color: "#444" }}>
-          Paschal Okafor
+          {state.firstname} {' '} {state.lastname}
         </Typography>
-        <Item Icon={<FiUser />} text={"pasmac"} />
-        <Item Icon={<AiOutlineMail />} text={"okaforpaschal018@gmail.com"} />
-        <Item Icon={<GiVibratingSmartphone />} text={"07031102089"} />
+        <Item Icon={<FiUser />} text={state.username} />
+        <Item Icon={<AiOutlineMail />} text={state.email} />
+        <Item Icon={<GiVibratingSmartphone />} text={state.phoneNumber} />
         <Item Icon={<RiLockPasswordLine />} text={"**********"} />
-        <Item Icon={<TiGroupOutline />} text={"manager"} />
+        <Item Icon={<TiGroupOutline />} text={state.isManager ? "manager" : "marketer"} />
         <Button
           variant="contained"
           size="small"

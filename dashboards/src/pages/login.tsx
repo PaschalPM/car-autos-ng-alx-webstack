@@ -7,19 +7,18 @@ import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 
-import useUserProfile from "../store/userProfile";
-
+import useUserProfile from "../store/app";
 
 const FormContainer = styled(Paper)({
   maxWidth: "400px",
   margin: "0 auto",
-  padding: "20px"
+  padding: "20px",
 });
 
 const Form = styled("form")({
   display: "flex",
   flexDirection: "column",
-  gap:20,
+  gap: 20,
 });
 
 type HandleChange =
@@ -30,6 +29,7 @@ type HandleSubmit = React.FormEventHandler<HTMLFormElement> | undefined;
 
 const Login = () => {
   const [formData, setFormData] = useState({ username: "", password: "" });
+  const setUserToken = useUserProfile((state) => state.setUserToken);
 
   const handleChange: HandleChange = (e) => {
     const { name, value } = e.target;
@@ -38,18 +38,7 @@ const Login = () => {
 
   const handleSubmit: HandleSubmit = (e) => {
     e.preventDefault();
-
-    const {setUserProfile} = useUserProfile(({setUserProfile})=> ({setUserProfile}))
-    // You can add your login logic here
-    // console.log("Login data submitted:", formData);
-
-    setUserProfile({
-        firstname: 'Paschal',
-        lastname: 'Okafor',
-        email: 'okaforpaschal018@gmail.com',
-        phoneNumber: '07031102089',
-        username:'pasmac'
-    })
+    setUserToken("simple-token");
   };
 
   return (
@@ -74,13 +63,18 @@ const Login = () => {
           onChange={handleChange}
           required
         />
-        <Button type="submit" variant="contained" color="inherit" sx={{
+        <Button
+          type="submit"
+          variant="contained"
+          color="inherit"
+          sx={{
+            backgroundColor: baseColor,
+            color: "#fff",
+            "&:hover": {
               backgroundColor: baseColor,
-              color: "#fff",
-              "&:hover": {
-                backgroundColor: baseColor,
-              },
-            }}>
+            },
+          }}
+        >
           Login
         </Button>
       </Form>
