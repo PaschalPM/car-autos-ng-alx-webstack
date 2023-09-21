@@ -1,90 +1,92 @@
-import { useState } from "react";
-import { baseColor } from "../libs/utils";
-
 import { styled } from "@mui/system";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-
-import useUserProfile from "../store/userProfile";
-
+import useAppStore from "../store/app";
+import { Formik, FormikConfig, Form as FormikForm, FormikProps } from "formik";
+import * as Yup from "yup";
+import MyTextField from "../components/formFields/MyTextField";
+import PasswordField from "../components/formFields/PasswordField";
+import MyButtonWithSpinner from "../components/MyButtonWithSpinner";
+import MyAlert from "../components/prompts/MyAlert";
+import { useNavigate } from "react-router-dom";
 
 const FormContainer = styled(Paper)({
   maxWidth: "400px",
   margin: "0 auto",
-  padding: "20px"
+  padding: "20px",
 });
 
-const Form = styled("form")({
+const Form = styled(FormikForm)({
   display: "flex",
   flexDirection: "column",
-  gap:20,
+  gap: 20,
 });
 
-type HandleChange =
-  | React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
-  | undefined;
-
-type HandleSubmit = React.FormEventHandler<HTMLFormElement> | undefined;
+type Values = {
+  username: string;
+  password: string;
+};
 
 const Login = () => {
-  const [formData, setFormData] = useState({ username: "", password: "" });
+  const setUserJWTToken = useAppStore((state) => state.setUserJWTToken);
+  const openAlert = useAppStore((state) => state.openAlert);
+  const resetAlert = useAppStore((state) => state.resetAlert);
+  const navigate = useNavigate()
 
-  const handleChange: HandleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit: HandleSubmit = (e) => {
-    e.preventDefault();
-
-    const {setUserProfile} = useUserProfile(({setUserProfile})=> ({setUserProfile}))
-    // You can add your login logic here
-    // console.log("Login data submitted:", formData);
-
-    setUserProfile({
-        firstname: 'Paschal',
-        lastname: 'Okafor',
-        email: 'okaforpaschal018@gmail.com',
-        phoneNumber: '07031102089',
-        username:'pasmac'
-    })
+  const formikConfig: FormikConfig<Values> = {
+    initialValues: {
+      username: "",
+      password: "",
+    },
+    validationSchema: Yup.object({
+      username: Yup.string().required(),
+      password: Yup.string().min(8).required(),
+    }),
+    onSubmit: (values, formikHelpers) => {
+      console.log(values, formikHelpers);
+      openAlert("Logged in successfully", ()=>{
+        resetAlert()
+        setUserJWTToken(`${values.username}-${values.password}`)
+        navigate('/dashboard/')
+      }, "success");
+    },
   };
 
   return (
-    <FormContainer elevation={3}>
-      <Typography variant="h5" gutterBottom>
-        Login
-      </Typography>
-      <Form onSubmit={handleSubmit}>
-        <TextField
-          label="Username"
-          type="text"
-          name="username"
-          value={formData.username}
-          onChange={handleChange}
-          required
-        />
-        <TextField
-          label="Password"
-          type="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-          required
-        />
-        <Button type="submit" variant="contained" color="inherit" sx={{
-              backgroundColor: baseColor,
-              color: "#fff",
-              "&:hover": {
-                backgroundColor: baseColor,
-              },
-            }}>
+    <>
+      <FormContainer elevation={3}>
+        <Typography variant="h5" gutterBottom>
           Login
-        </Button>
-      </Form>
-    </FormContainer>
+        </Typography>
+        <Formik {...formikConfig}>
+          {(formik: FormikProps<Values>) => (
+            <Form>
+              <MyTextField
+                label="Username"
+                type="text"
+                name="username"
+                initialValue={formik.values}
+                size="medium"
+                required
+              />
+              <PasswordField
+                label="Password"
+                name="password"
+                size="medium"
+                initialValue={formik.values}
+              />
+              <MyButtonWithSpinner
+                text="Login"
+                suspenseText="Logging in"
+                type="submit"
+                formik={formik}
+              />
+            </Form>
+          )}
+        </Formik>
+      </FormContainer>
+      <MyAlert />
+    </>
   );
 };
 

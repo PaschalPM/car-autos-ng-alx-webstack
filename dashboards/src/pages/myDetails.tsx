@@ -1,247 +1,150 @@
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
+import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
-
+import MyAlert from "../components/prompts/MyAlert";
 import Save from "@mui/icons-material/Save";
-
-import LoadingSpinner from "../components/LoadingSpinner";
-import PasswordField from "../components/PasswordField";
-import { baseColor, ucfirst } from "../libs/utils";
-import { useEffect, useState } from "react";
-import * as Yup from "yup";
+import MyTextField from "../components/formFields/MyTextField";
+import { baseColor } from "../libs/utils";
+import { useState } from "react";
 import { hasFormChanged } from "../libs/utils";
-import Error from "../components/alerts/Error";
-import _ from "lodash";
-import { handleSubmit } from "../libs/snippets/myDetails";
+import useAppStore from "../store/app";
+import UpdatePasswordModal from "../components/views/UpdatePasswordModal";
+import { userDetailValidationSchema, fields } from "../libs/snippets/myDetails";
+import { Formik, FormikConfig, FormikProps, Form } from "formik";
+import SubHeader from "../components/typography/SubHeader";
+import MySnackbar from "../components/prompts/MySnackbar";
 
-const MyTextField = ({
-  label,
-  name,
-  initialValue,
-  type,
-  disabled,
-  onChange,
-}: {
-  label: string;
-  name: string;
-  initialValue: string;
-  type?: "text" | "number" | "password" | "email";
-  disabled?: boolean;
-  onChange?:
-    | React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>
-    | undefined;
-}) => (
-  <TextField
-    label={label}
-    variant="standard"
-    name={name}
-    disabled={disabled ? true : initialValue === "..."}
-    value={initialValue}
-    type={type ? type : "text"}
-    onChange={onChange}
-    sx={{
-      flexGrow: 1,
-      flexBasis: "350px",
-    }}
-  />
-);
 
 export default function MyDetails() {
-  const [initialValuesJSON, setInitialValuesJSON] = useState<string>("");
-  const [initialValues, setInitialValues] = useState<UserValues>({
-    firstname: "...",
-    lastname: "...",
-    username: "...",
-    email: "...",
-    phoneNumber: "...",
-    password: "...",
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [readyData, setReadyData] = useState<UserValues>({} as UserValues);
-  const [submissionError, setSubmissionError] = useState("");
+  const userProfile = useAppStore((state) => state.userProfile);
+  const openSnackbar = useAppStore((state) => state.openSnackbar)
+  const resetSnackbar = useAppStore((state) => state.resetSnackbar)
+  const openAlert = useAppStore((state) => state.openAlert)
+  const resetAlert = useAppStore((state) => state.resetAlert)
 
-  useEffect(() => {
-    setTimeout(() => {
-      const user = {
-        firstname: "Paschal",
-        lastname: "Okafor",
-        username: "pasmac",
-        email: "okaforpaschal018@gmail.com",
-        phoneNumber: "07031102089",
-        password: "123456789",
-      };
-      setInitialValues(user);
+  const [isPasswordModalOpen, setisPasswordModalOpen] = useState(false);
+  const formikConfig: FormikConfig<UserValues> = {
+    initialValues: {
+      firstname: userProfile.firstname,
+      lastname: userProfile.lastname,
+      username: userProfile.username,
+      email: userProfile.email,
+      phoneNumber: userProfile.phoneNumber,
+    },
+    validationSchema: userDetailValidationSchema,
+    onSubmit(values, formikHelpers) {
 
-      setInitialValuesJSON(() => JSON.stringify(user).toString());
-    }, 3000);
-  }, []);
+      const handleCloseSnackbar = () => {
+        console.log(values);
+        openAlert("User editted successfully", resetAlert, "success")
+        formikHelpers.setSubmitting(false);
+        resetSnackbar()
+      }
+     const actionCb = () => {
+      formikHelpers.setSubmitting(false);
+        resetSnackbar()
+     }
+      openSnackbar('Submitting changes...', actionCb, handleCloseSnackbar)
+      
+    },
+  };
 
   return (
     <>
-      <LoadingSpinner condition={initialValues.username === "..."} />
-      <Error
-        errorMessageState={submissionError}
-        handleClose={() => {
-          setSubmissionError("");
-          setIsSubmitting(false);
-        }}
+      <Typography variant="h6"> My Details</Typography>
+      <Divider sx={{ mb: 3 }} />
+      <SubHeader sx={{ mb: 1 }}> Update Profile </SubHeader>
+      <Formik {...formikConfig}>
+        {(formik: FormikProps<UserValues>) => (
+          <Form>
+            <Paper
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                columnGap: 6,
+                rowGap: 2,
+                px: 1,
+                p: 2,
+              }}
+            >
+              {fields.map(({ name, label, type }) => (
+                <MyTextField
+                  initialValue={formik.values}
+                  key={name}
+                  name={name}
+                  label={label}
+                  type={type}
+                  required={true}
+                  sx={{
+                    flexGrow: 1,
+                    flexBasis: "350px",
+                    marginBottom: 1,
+                  }}
+                />
+              ))}
+              <MyTextField
+                label="Group"
+                initialValue={formik.values}
+                name="group"
+                value={userProfile.isManager ? "Manager" : "Marketer"}
+                sx={{
+                  flexGrow: 1,
+                  flexBasis: "350px",
+                  marginBottom: 1,
+                }}
+                disabled={true}
+              />
+              <Button
+                variant="contained"
+                color="inherit"
+                size="large"
+                disabled={
+                  !hasFormChanged(userProfile, {
+                    ...formik.values,
+                    isManager: userProfile.isManager,
+                  }) ||
+                  !formik.isValid ||
+                  formik.isSubmitting
+                }
+                type="submit"
+                sx={{
+                  backgroundColor: baseColor,
+                  color: "#fff",
+                  "&:hover": {
+                    backgroundColor: baseColor,
+                  },
+                }}
+                startIcon={<Save />}
+              >
+                {!formik.isSubmitting ? (
+                  <>Save changes</>
+                ) : (
+                  <>
+                    <span style={{ marginRight: "8px" }}> Saving changes </span>
+                    <CircularProgress size={15} sx={{ color: "#a6a6a6" }} />
+                  </>
+                )}
+              </Button>
+              <Button
+                variant="text"
+                size="small"
+                color="secondary"
+                onClick={() => setisPasswordModalOpen(true)}
+              >
+                Edit password
+              </Button>
+            </Paper>
+          </Form>
+        )}
+      </Formik>
+      <UpdatePasswordModal
+        open={isPasswordModalOpen}
+        onClose={() => setisPasswordModalOpen(false)}
       />
-      <Snackbar
-        message={"Submitting form..."}
-        open={!_.isEmpty(readyData)}
-        autoHideDuration={5000}
-        action={
-          <Button
-            onClick={() => {
-              setReadyData({} as UserValues);
-              setIsSubmitting(false);
-            }}
-          >
-            undo
-          </Button>
-        }
-        onClose={() => {
-          alert(JSON.stringify(readyData));
-          setIsSubmitting(false);
-          setReadyData({} as UserValues);
-        }}
-      />
-      <Typography variant="h5"> Update My Details</Typography>
-      <Divider sx={{ marginBottom: 2 }} />
-
-      <form
-        action=""
-        onSubmit={(ev) =>
-          handleSubmit(
-            ev,
-            () => setIsSubmitting(true),
-            (value) => {
-              setReadyData(value);
-            },
-            (reason) => setSubmissionError(reason)
-          )
-        }
-      >
-        <Box
-          sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            columnGap: 6,
-            rowGap: 2,
-            px: 1,
-          }}
-        >
-          <MyTextField
-            label="First Name"
-            name="firstname"
-            initialValue={initialValues.firstname}
-            onChange={(ev) =>
-              setInitialValues((v) => ({
-                ...v,
-                firstname: ev.target.value as string,
-              }))
-            }
-          />
-
-          <MyTextField
-            label="Last Name"
-            name="lastname"
-            initialValue={initialValues.lastname}
-            onChange={(ev) =>
-              setInitialValues((v) => ({
-                ...v,
-                lastname: ev.target.value as string,
-              }))
-            }
-          />
-
-          <MyTextField
-            label="Username"
-            name="username"
-            initialValue={initialValues.username}
-            onChange={(ev) =>
-              setInitialValues((v) => ({
-                ...v,
-                username: ev.target.value as string,
-              }))
-            }
-          />
-
-          <MyTextField
-            label="Email"
-            name="email"
-            type="email"
-            initialValue={initialValues.email}
-            onChange={(ev) =>
-              setInitialValues((v) => ({
-                ...v,
-                email: ev.target.value as string,
-              }))
-            }
-          />
-
-          <MyTextField
-            label="Phone number"
-            name="phoneNumber"
-            initialValue={initialValues.phoneNumber}
-            onChange={(ev) =>
-              setInitialValues((v) => ({
-                ...v,
-                phoneNumber: ev.target.value as string,
-              }))
-            }
-          />
-          <PasswordField
-            name="password"
-            sx={{
-              flexGrow: 1,
-              flexBasis: "350px",
-            }}
-            value={initialValues.password as string}
-            onChange={(ev) =>
-              setInitialValues((v) => ({
-                ...v,
-                password: ev.target.value as string,
-              }))
-            }
-          />
-
-          <Button
-            variant="contained"
-            size="small"
-            color="inherit"
-            type="submit"
-            disabled={
-              initialValues.username === "..." ||
-              !hasFormChanged(initialValuesJSON, initialValues) ||
-              isSubmitting
-            }
-            sx={{
-              backgroundColor: baseColor,
-              color: "#fff",
-              mt: 1,
-              "&:hover": {
-                backgroundColor: baseColor,
-              },
-            }}
-            startIcon={<Save />}
-          >
-            {!isSubmitting ? (
-              <>Save changes</>
-            ) : (
-              <>
-                <span style={{ marginRight: "8px" }}> Saving changes </span>
-                <CircularProgress size={15} sx={{ color: "#a6a6a6" }} />
-              </>
-            )}
-          </Button>
-        </Box>
-      </form>
+      <MyAlert/>
+      <MySnackbar/>
     </>
   );
 }
