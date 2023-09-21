@@ -3,6 +3,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import HomeIcon from "@mui/icons-material/Home";
+import LoginIcon from "@mui/icons-material/Login";
 
 import { baseColor } from "../../libs/utils";
 import { Link } from "react-router-dom";
@@ -45,6 +46,7 @@ const UnauthorizedPage = () => {
             variant="contained"
             color="secondary"
             component={Link}
+            startIcon={<LoginIcon/>}
             to="/login"
           >
             Return to Login

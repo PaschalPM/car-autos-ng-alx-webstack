@@ -6,7 +6,8 @@ export const urlPath = (uniqueText: string) => {
 
   if (uniqueText === "home") return "/"
   if (uniqueText === "dashboard") return basePath;
-
+  if (uniqueText === "logout") return ""
+  
   return basePath + uniqueText;
 };
 
@@ -24,3 +25,4 @@ export const ucfirst = (str:string) => str.slice(0,1).toUpperCase()+str.slice(1)
 export const baseColor = "rgba(103, 99, 59)"
 export const secColor = "rgba(199, 184, 45, 0.35)"
 export const thirdColor = "rgba(199, 184, 45, 0.10)"
+export const lightColor = "rgb(205, 198, 121)"

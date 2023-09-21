@@ -1,6 +1,5 @@
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
 import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";
@@ -13,6 +12,7 @@ import { baseColor, thirdColor } from "../../../libs/utils";
 import { ACTIVITIES, type RecentActivity } from "../../../libs/faker/log";
 import { useTable } from "react-table";
 import { useMemo } from "react";
+import SubHeader from "../../typography/SubHeader";
 
 type Column<T> = {
   Header: string;
@@ -66,13 +66,7 @@ export default function RecentActivities() {
   return (
     <Card>
       <CardContent>
-        <Typography
-          variant={"h6"}
-          sx={{ fontWeight: 500, color: baseColor }}
-          gutterBottom
-        >
-          Recent Activities
-        </Typography>
+        <SubHeader>Recent Activities</SubHeader>
         <TableContainer
           component={Paper}
           sx={{ maxHeight: "70vh", overflow: "auto" }}
@@ -109,8 +103,10 @@ export default function RecentActivities() {
                               cell.value as ActivityType,
                               idx
                             )}`,
-                            fontWeight: `${idx === 0 || idx === 3 ? "700" : ""}`,
-                            fontSize: '0.75rem'
+                            fontWeight: `${
+                              idx === 0 || idx === 3 ? "700" : ""
+                            }`,
+                            fontSize: "0.75rem",
                           }}
                           {...cell.getCellProps()}
                         >

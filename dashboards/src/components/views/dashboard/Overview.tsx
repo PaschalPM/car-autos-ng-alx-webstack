@@ -10,8 +10,11 @@ import { BsFillPeopleFill } from "react-icons/bs";
 import { RiAdvertisementFill } from "react-icons/ri";
 import { Link as ReactLink } from "react-router-dom";
 import { urlPath, secColor, baseColor } from "../../../libs/utils";
+import SubHeader from "../../typography/SubHeader";
+import useAppStore from "../../../store/app";
 
-const overviewElements: {label:string, num:number, link:string, icon:React.ReactNode}[] = [
+type OverviewType = {label:string, num:number, link:string, icon:React.ReactNode}
+const overviewElements: OverviewType[] = [
     {
         label: 'Total Marketers',
         num: 5,
@@ -32,13 +35,20 @@ const overviewElements: {label:string, num:number, link:string, icon:React.React
     },
 
 ]
+
+const overviewElementsGenerator = (isManager: boolean | undefined) :OverviewType[] => {
+  if (isManager) return overviewElements
+  return overviewElements.slice(1)
+}
+
 export default function Overview() {
+  const {isManager} = useAppStore((state) => state.userProfile)
   return (
     <Card sx={{marginBottom:2}}>
       <CardContent>
-        <Typography variant={"h6"} sx={{ fontWeight: 500, color:baseColor }} gutterBottom>
+        <SubHeader>
           Overview
-        </Typography>
+        </SubHeader>
         <Stack
           direction={{ xs: "column", sm: "row" }}
           spacing={6}
@@ -50,7 +60,7 @@ export default function Overview() {
             justifyContent: "space-between",
           }}
         >
-          {overviewElements.map(({label, num, link, icon}) => (
+          {overviewElementsGenerator(isManager as boolean).map(({label, num, link, icon}) => (
             <Paper
               key={label}
               elevation={0}

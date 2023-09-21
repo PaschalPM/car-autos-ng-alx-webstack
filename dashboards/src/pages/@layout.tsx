@@ -23,6 +23,10 @@ import { Outlet } from "react-router-dom";
 import MyListItem from "../components/MyListItem";
 import useAppStore from "../store/app";
 import { ucfirst } from "../libs/utils";
+import SubHeader from "../components/typography/SubHeader";
+import { useNavigate } from "react-router-dom";
+import MySnackbar from "../components/prompts/MySnackbar";
+import MyAlert from "../components/prompts/MyAlert";
 
 const drawerWidth = 240;
 
@@ -96,10 +100,38 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function Layout() {
+  const { username, isManager } = useAppStore((state) => state.userProfile);
+  const resetUserJWTToken = useAppStore((state) => state.resetUserJWTToken);
+  const resetUserProfile = useAppStore((state) => state.resetUserProfile);
+  const openSnackbar = useAppStore((state) => state.openSnackbar);
+  const resetSnackbar = useAppStore((state) => state.resetSnackbar);
+  const openAlert = useAppStore((state) => state.openAlert);
+  const resetAlert = useAppStore((state) => state.resetAlert);
+  const navigate = useNavigate();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const {username} = useAppStore((state)=>state.userProfile)
 
+  const handleLogout = () => {
+    openSnackbar(
+      "Logging out.",
+      () => {
+        resetSnackbar();
+      },
+      () => {
+        openAlert(
+          "Logged out.",
+          () => {
+            resetUserJWTToken();
+            resetUserProfile();
+            navigate("/");
+            resetAlert();
+            resetSnackbar();
+          },
+          "success"
+        );
+      }
+    );
+  };
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -107,83 +139,101 @@ export default function Layout() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  const firstListIcons = [
-    <Dashboard />,
-    <BsFillPeopleFill size={24}/>,
-    <RiAdvertisementFill size={24} />,
-    <AiFillProfile size={24} />,
-  ];
+
+  const listGenerator = (isManager: boolean | undefined) => {
+    return isManager
+      ? ["Dashboard", "My Marketers", "My Adverts", "My Details"]
+      : ["Dashboard", "My Adverts", "My Details"];
+  };
+  const firstListIconsGen = (isManager: boolean | undefined) => {
+    return isManager
+      ? [
+          <Dashboard />,
+          <BsFillPeopleFill size={24} />,
+          <RiAdvertisementFill size={24} />,
+          <AiFillProfile size={24} />,
+        ]
+      : [
+          <Dashboard />,
+          <RiAdvertisementFill size={24} />,
+          <AiFillProfile size={24} />,
+        ];
+  };
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <AppBar position="fixed" open={open}>
-        <Toolbar sx={{ backgroundColor: "white" }}>
-          <IconButton
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{
-              marginRight: 5,
-              ...(open && { display: "none" }),
-              color: "rgba(103, 99, 59)",
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
+    <>
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <AppBar position="fixed" open={open}>
+          <Toolbar sx={{ backgroundColor: "white" }}>
+            <IconButton
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              sx={{
+                marginRight: 5,
+                ...(open && { display: "none" }),
+                color: "rgba(103, 99, 59)",
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
 
-          <Typography color="rgba(103, 99, 59)" noWrap component="div">
-            <Typography variant="caption">Welcome Back!</Typography>
-            <Typography variant="h6" color="rgba(103, 99, 59)" mt={-1}>
-              {ucfirst(username)}
+            <Typography color="rgba(103, 99, 59)" noWrap component="div">
+              <Typography variant="caption">Welcome Back!</Typography>
+              <SubHeader sx={{ mt: -1 }}>{ucfirst(username)}</SubHeader>
             </Typography>
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "rtl" ? (
-              <ChevronRightIcon />
-            ) : (
-              <ChevronLeftIcon />
-            )}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <List>
-          {["Dashboard", "My Marketers", "My Adverts", "My Details"].map(
-            (text, index) => (
+          </Toolbar>
+        </AppBar>
+        <Drawer variant="permanent" open={open}>
+          <DrawerHeader>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === "rtl" ? (
+                <ChevronRightIcon />
+              ) : (
+                <ChevronLeftIcon />
+              )}
+            </IconButton>
+          </DrawerHeader>
+          <Divider />
+          <List>
+            {listGenerator(isManager as boolean).map((text, index) => (
               <MyListItem
                 uniqueText={text}
                 key={text}
                 open={open}
-                ListItemMainIcon={firstListIcons[index]}
+                ListItemMainIcon={
+                  firstListIconsGen(isManager as boolean)[index]
+                }
               />
-            )
-          )}
-        </List>
-        <Divider />
-        <List>
-          <MyListItem
-            uniqueText="Home"
-            open={open}
-            ListItemMainIcon={<Home />}
-          />
-          <MyListItem
-            uniqueText="Logout"
-            open={open}
-            ListItemMainIcon={<Logout />}
-            color="gray"
-          />
-        </List>
-      </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader />
-        <Box sx={{position: 'relative'}}>
-        <Outlet />
+            ))}
+          </List>
+          <Divider />
+          <List>
+            <MyListItem
+              uniqueText="Home"
+              open={open}
+              ListItemMainIcon={<Home />}
+            />
+            <MyListItem
+              uniqueText="Logout"
+              open={open}
+              ListItemMainIcon={<Logout />}
+              notNav={true}
+              handleClick={handleLogout}
+              color="gray"
+            />
+          </List>
+        </Drawer>
+        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+          <DrawerHeader />
+          <Box sx={{ position: "relative" }}>
+            <Outlet />
+          </Box>
         </Box>
       </Box>
-    </Box>
+      <MySnackbar />
+      <MyAlert />
+    </>
   );
 }

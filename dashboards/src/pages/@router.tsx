@@ -21,7 +21,9 @@ const router = createBrowserRouter(
         path="/"
         element={
           <>
-            Home Page <br /> <Link to='/dashboard'> To dashboard </Link>
+            Home Page <br /> 
+            <Link to='/dashboard/'> To dashboard </Link> <br/>
+            <Link to='/login'> Login </Link>
           </>
         }
       />

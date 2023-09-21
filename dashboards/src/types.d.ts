@@ -8,9 +8,18 @@ type UserValues = {
   isManager?: boolean;
 };
 
-type Alert = {
-  isOpen: boolean,
-  message: string,
-  severity?: "error" | "success" | "warning"
-  handleClose?: ()=>void
-}
+type Prompt = {
+  isOpen: boolean;
+  message: string;
+};
+
+type Alert = Prompt & {
+  severity?: "error" | "success" | "warning";
+  handleClose?: () => void;
+};
+
+
+type Snackbar = Prompt & {
+  actionCb: () => void | undefined;
+  onClose: () => void | undefined;
+};

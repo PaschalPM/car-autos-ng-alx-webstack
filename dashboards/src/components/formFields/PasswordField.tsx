@@ -15,6 +15,7 @@ function PasswordField<T>({
   value,
   fullWidth,
   withAdornment,
+  size
 }: {
   name: string;
   label: string;
@@ -24,6 +25,7 @@ function PasswordField<T>({
   fullWidth?: boolean;
   withAdornment?: boolean;
   sx?: SxProps<Theme> | undefined;
+  size?: "small" | "medium"
 }) {
   const [showPassword, setShowPassword] = useState(false);
   const adornmentColor: (
@@ -39,7 +41,7 @@ function PasswordField<T>({
             {...field}
             variant="outlined"
             required
-            size="small"
+            size={size ? size : 'small'}
             label={label}
             placeholder={label}
             value={value ?? meta.value}

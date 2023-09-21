@@ -3,24 +3,28 @@ import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
-import MyAlert from "../components/MyAlert";
-
+import MyAlert from "../components/prompts/MyAlert";
 import Save from "@mui/icons-material/Save";
-
-import MyTextField from "../components/MyTextField";
+import MyTextField from "../components/formFields/MyTextField";
 import { baseColor } from "../libs/utils";
 import { useState } from "react";
 import { hasFormChanged } from "../libs/utils";
 import useAppStore from "../store/app";
 import UpdatePasswordModal from "../components/views/UpdatePasswordModal";
 import { userDetailValidationSchema, fields } from "../libs/snippets/myDetails";
-
 import { Formik, FormikConfig, FormikProps, Form } from "formik";
+import SubHeader from "../components/typography/SubHeader";
+import MySnackbar from "../components/prompts/MySnackbar";
+
 
 export default function MyDetails() {
   const userProfile = useAppStore((state) => state.userProfile);
+  const openSnackbar = useAppStore((state) => state.openSnackbar)
+  const resetSnackbar = useAppStore((state) => state.resetSnackbar)
+  const openAlert = useAppStore((state) => state.openAlert)
+  const resetAlert = useAppStore((state) => state.resetAlert)
+
   const [isPasswordModalOpen, setisPasswordModalOpen] = useState(false);
-  const [submitAlertState, setSubmitAlertState] = useState({} as Alert);
   const formikConfig: FormikConfig<UserValues> = {
     initialValues: {
       firstname: userProfile.firstname,
@@ -31,22 +35,27 @@ export default function MyDetails() {
     },
     validationSchema: userDetailValidationSchema,
     onSubmit(values, formikHelpers) {
-      setTimeout(() => {
+
+      const handleCloseSnackbar = () => {
         console.log(values);
-        setSubmitAlertState({
-          isOpen: true,
-          message: "User editted successfully",
-        });
+        openAlert("User editted successfully", resetAlert, "success")
         formikHelpers.setSubmitting(false);
-      }, 2000);
+        resetSnackbar()
+      }
+     const actionCb = () => {
+      formikHelpers.setSubmitting(false);
+        resetSnackbar()
+     }
+      openSnackbar('Submitting changes...', actionCb, handleCloseSnackbar)
+      
     },
   };
 
   return (
     <>
-      <Typography variant="h5"> My Details</Typography>
-      <Divider sx={{ marginBottom: 3 }} />
-      <Typography variant="h6" sx={{ color: baseColor, marginBottom:1 }}> Update Profile </Typography>
+      <Typography variant="h6"> My Details</Typography>
+      <Divider sx={{ mb: 3 }} />
+      <SubHeader sx={{ mb: 1 }}> Update Profile </SubHeader>
       <Formik {...formikConfig}>
         {(formik: FormikProps<UserValues>) => (
           <Form>
@@ -134,12 +143,8 @@ export default function MyDetails() {
         open={isPasswordModalOpen}
         onClose={() => setisPasswordModalOpen(false)}
       />
-      <MyAlert
-        message={submitAlertState.message}
-        isOpen={submitAlertState.isOpen}
-        severity={submitAlertState.severity}
-        onClose={() => setSubmitAlertState({} as Alert)}
-      />
+      <MyAlert/>
+      <MySnackbar/>
     </>
   );
 }

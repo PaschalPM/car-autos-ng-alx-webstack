@@ -11,6 +11,7 @@ function MyTextField<T>({
   disabled,
   value,
   fullWidth,
+  size
 }: {
   name: string;
   label: string;
@@ -21,6 +22,7 @@ function MyTextField<T>({
   value?: string;
   fullWidth?: boolean;
   sx?: SxProps<Theme> | undefined;
+  size?: "small" | "medium"
 }) {
   return (
     <Field name={name}>
@@ -29,7 +31,7 @@ function MyTextField<T>({
           <TextField
             {...field}
             variant="outlined"
-            size="small"
+            size={size? size : "small"}
             label={label}
             placeholder={label}
             value={value ?? meta.value}

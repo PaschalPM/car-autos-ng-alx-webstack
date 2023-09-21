@@ -1,5 +1,4 @@
 import Modal from "@mui/material/Modal";
-import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
@@ -7,12 +6,12 @@ import Divider from "@mui/material/Divider";
 import CloseIcon from "@mui/icons-material/Close";
 import SaveIcon from "@mui/icons-material/Save";
 import * as Yup from "yup";
-import PasswordField from "../PasswordField";
-import { useState } from "react";
-import MyAlert from "../MyAlert";
-
+import PasswordField from "../formFields/PasswordField";
+import MyAlert from "../prompts/MyAlert";
 import MyButtonWithSpinner from "../MyButtonWithSpinner";
 import { Formik, FormikConfig, Form, FormikProps } from "formik";
+import SubHeader from "../typography/SubHeader";
+import useAppStore from "../../store/app";
 
 const fields: { label: string; name: string }[] = [
   {
@@ -36,7 +35,8 @@ type Props = {
 };
 
 const UpdatePasswordModal = ({ open, onClose }: Props) => {
-  const [submitAlert, setSubmitAlert] = useState({} as Alert);
+  const openAlert = useAppStore((state) => state.openAlert);
+  const resetAlert = useAppStore((state) => state.resetAlert);
 
   const handleClose = () => {
     onClose();
@@ -57,13 +57,7 @@ const UpdatePasswordModal = ({ open, onClose }: Props) => {
     }),
     onSubmit(values, formikHelpers) {
       setTimeout(() => {
-        setSubmitAlert({
-          isOpen: true,
-          message: "Successful",
-          handleClose: () => {
-            setSubmitAlert({} as Alert);
-          },
-        });
+        openAlert("Successful", resetAlert, "success");
         console.log(values);
         console.log(formikHelpers);
         handleClose();
@@ -90,9 +84,7 @@ const UpdatePasswordModal = ({ open, onClose }: Props) => {
                 <CloseIcon />
               </IconButton>
             </Box>
-            <Typography variant="h6" gutterBottom>
-              Edit Password
-            </Typography>
+            <SubHeader>Edit Password</SubHeader>
             <Divider sx={{ marginBottom: 2 }} />
 
             <Formik {...formikConfig}>
@@ -122,12 +114,7 @@ const UpdatePasswordModal = ({ open, onClose }: Props) => {
           </Box>
         </Container>
       </Modal>
-      <MyAlert
-        isOpen={submitAlert.isOpen}
-        message={submitAlert.message}
-        severity={submitAlert.severity}
-        onClose={submitAlert.handleClose}
-      />
+      <MyAlert />
     </>
   );
 };

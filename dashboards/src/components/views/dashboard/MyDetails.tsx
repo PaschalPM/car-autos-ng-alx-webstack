@@ -13,7 +13,7 @@ import { TiGroupOutline } from "react-icons/ti";
 import { GiVibratingSmartphone } from "react-icons/gi";
 import { Link } from "react-router-dom";
 import useAppStore from "../../../store/app";
-
+import SubHeader from "../../typography/SubHeader";
 
 const Item = ({ Icon, text }: { Icon: React.ReactNode; text: string }) => (
   <Box
@@ -29,21 +29,22 @@ const Item = ({ Icon, text }: { Icon: React.ReactNode; text: string }) => (
   </Box>
 );
 export default function MyDetails() {
-  const state = useAppStore((state)=> state.userProfile)
+  const state = useAppStore((state) => state.userProfile);
   return (
     <Card>
       <CardContent>
-        <Typography variant={"h6"} sx={{ fontWeight: 500, color:baseColor }} gutterBottom>
-          My Details
-        </Typography>
+        <SubHeader>My Details</SubHeader>
         <Typography gutterBottom sx={{ color: "#444" }}>
-          {state.firstname} {' '} {state.lastname}
+          {state.firstname} {state.lastname}
         </Typography>
         <Item Icon={<FiUser />} text={state.username} />
         <Item Icon={<AiOutlineMail />} text={state.email} />
         <Item Icon={<GiVibratingSmartphone />} text={state.phoneNumber} />
         <Item Icon={<RiLockPasswordLine />} text={"**********"} />
-        <Item Icon={<TiGroupOutline />} text={state.isManager ? "manager" : "marketer"} />
+        <Item
+          Icon={<TiGroupOutline />}
+          text={state.isManager ? "manager" : "marketer"}
+        />
         <Button
           variant="contained"
           size="small"
