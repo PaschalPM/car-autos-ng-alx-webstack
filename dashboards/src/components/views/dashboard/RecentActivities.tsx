@@ -64,7 +64,7 @@ export default function RecentActivities() {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data });
   return (
-    <Card>
+    <Card sx={{ width:"100%" }}>
       <CardContent>
         <SubHeader>Recent Activities</SubHeader>
         <TableContainer

@@ -1,4 +1,5 @@
 type UserValues = {
+  id?: string;
   firstname: string;
   lastname: string;
   username: string;
@@ -23,3 +24,11 @@ type Snackbar = Prompt & {
   actionCb: () => void | undefined;
   onClose: () => void | undefined;
 };
+
+type CarAdvert = {
+  id: string;
+  title: string;
+  price: string;
+  isActive: boolean;
+  thumbnail: string;
+}

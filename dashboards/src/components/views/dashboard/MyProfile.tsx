@@ -28,12 +28,12 @@ const Item = ({ Icon, text }: { Icon: React.ReactNode; text: string }) => (
     <Typography variant={"caption"}> {text} </Typography>
   </Box>
 );
-export default function MyDetails() {
+export default function MyProfile() {
   const state = useAppStore((state) => state.userProfile);
   return (
-    <Card>
+    <Card sx={{ width:"100%" }}>
       <CardContent>
-        <SubHeader>My Details</SubHeader>
+        <SubHeader>My Profile Summary</SubHeader>
         <Typography gutterBottom sx={{ color: "#444" }}>
           {state.firstname} {state.lastname}
         </Typography>
@@ -59,7 +59,7 @@ export default function MyDetails() {
           }}
           startIcon={<Edit />}
         >
-          <Link to={urlPath("My Details")}>Edit details</Link>
+          <Link to={urlPath("my-profile:edit")}>Edit profile</Link>
         </Button>
       </CardContent>
     </Card>
