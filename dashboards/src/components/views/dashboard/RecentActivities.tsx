@@ -8,7 +8,8 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import Paper from "@mui/material/Paper";
 
-import { baseColor, thirdColor } from "../../../libs/utils";
+
+import { supportColor } from "../../../libs/utils";
 import { ACTIVITIES, type RecentActivity } from "../../../libs/faker/log";
 import { useTable } from "react-table";
 import { useMemo } from "react";
@@ -45,11 +46,11 @@ const colorByActivity = (activity: ActivityType, columnIdx: number) => {
       case "Delete":
         return "red";
       case "Create":
-        return "green";
+        return "primary.main";
       case "Login":
-        return "rgb(85, 145, 85)";
+        return "primary.light";
       case "Update":
-        return "blue";
+        return "dodgerblue";
       case "Logout":
         return "gray";
       default:
@@ -72,12 +73,11 @@ export default function RecentActivities() {
           sx={{ maxHeight: "70vh", overflow: "auto" }}
         >
           <Table {...getTableProps()}>
-            <TableHead sx={{ background: baseColor }}>
-              {headerGroups.map((headerGroup) => (
-                <TableRow {...headerGroup.getHeaderGroupProps()}>
+            <TableHead sx={{ background: 'primary.main' }}>
+              {headerGroups.map((headerGroup, idx) => (
+                <TableRow  { ...headerGroup.getHeaderGroupProps()} key={idx}>
                   {headerGroup.headers.map((header) => (
                     <TableCell
-                      sx={{ color: "#fff" }}
                       {...header.getHeaderProps}
                     >
                       {header.render("Header")}
@@ -91,11 +91,11 @@ export default function RecentActivities() {
                 prepareRow(row);
                 return (
                   <TableRow
-                    sx={{ background: `${!(idx % 2) ? thirdColor : ""}` }}
+                    sx={{ background: `${(idx % 2) ? supportColor : ""}` }}
                     {...row.getRowProps()}
+                    key={idx}
                   >
                     {row.cells.map((cell, idx) => {
-                      console.log(cell.value);
                       return (
                         <TableCell
                           sx={{

@@ -3,9 +3,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import HomeIcon from "@mui/icons-material/Home";
-
 import { Link } from "react-router-dom";
-import { baseColor } from "../../libs/utils";
 
 const NotFoundPage = () => {
   return (
@@ -29,9 +27,9 @@ const NotFoundPage = () => {
             color="inherit"
             sx={{
               mr: 0.5,
-              backgroundColor: baseColor,
+              backgroundColor: "primary.main",
               color: "#fff",
-              "&:hover": { backgroundColor: baseColor },
+              "&:hover": { backgroundColor: "primary.main" },
             }}
             component={Link}
             to="/"

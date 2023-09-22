@@ -1,6 +1,5 @@
 import { SxProps, Theme, Button, CircularProgress } from "@mui/material";
 import { FormikProps } from "formik";
-import { baseColor } from "../libs/utils";
 
 export default function MyButtonWithSpinner<T>({
   text,
@@ -27,18 +26,11 @@ export default function MyButtonWithSpinner<T>({
     <Button
       variant="contained"
       size={size}
-      color="inherit"
+      color="primary"
       fullWidth={fullWidth}
       type={type}
       disabled={!formik.dirty || !formik.isValid || formik.isSubmitting}
-      sx={{
-        ...sx,
-        background: baseColor,
-        color: "#fff",
-        "&:hover": {
-          background: baseColor,
-        },
-      }}
+   
       startIcon={startIcon}
       endIcon={endIcon}
     >

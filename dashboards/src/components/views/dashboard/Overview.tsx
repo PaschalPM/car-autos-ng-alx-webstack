@@ -9,7 +9,7 @@ import Link from "@mui/material/Link";
 import { BsFillPeopleFill } from "react-icons/bs";
 import { RiAdvertisementFill } from "react-icons/ri";
 import { Link as ReactLink } from "react-router-dom";
-import { urlPath, secColor, baseColor } from "../../../libs/utils";
+import { urlPath } from "../../../libs/utils";
 import SubHeader from "../../typography/SubHeader";
 import useAppStore from "../../../store/app";
 
@@ -19,19 +19,19 @@ const overviewElements: OverviewType[] = [
         label: 'Total Marketers',
         num: 5,
         link: urlPath('My Marketers'),
-        icon: <BsFillPeopleFill size={24} color={"#666"} />
+        icon: <BsFillPeopleFill size={24}/>
     },
     {
         label: 'Total Adverts',
         num: 200,
         link: urlPath('My Adverts'),
-        icon: <RiAdvertisementFill size={24} color={"#666"}/>
+        icon: <RiAdvertisementFill size={24}/>
     },
     {
         label: 'Inactive Adverts',
         num: 100,
         link: urlPath('My Adverts'),
-        icon: <RiAdvertisementFill size={24} color={"#666"}/>
+        icon: <RiAdvertisementFill size={24}/>
     },
 
 ]
@@ -51,7 +51,7 @@ export default function Overview() {
         </SubHeader>
         <Stack
           direction={{ xs: "column", sm: "row" }}
-          spacing={6}
+          spacing={3}
           useFlexGap
           flexWrap="wrap"
           py={2}
@@ -63,16 +63,19 @@ export default function Overview() {
           {overviewElementsGenerator(isManager as boolean).map(({label, num, link, icon}) => (
             <Paper
               key={label}
-              elevation={0}
+              elevation={2}
               sx={{
                 display: "flex",
                 justifyContent: "space-evenly",
-                gap: 2,
+                alignItems: "center",
+                p:1.5,
+                gap:1,
+                
               }}
             >
               <Box
                 sx={{
-                  backgroundColor: secColor,
+                  backgroundColor: 'primary.light',
                   width: "40px",
                   height: "40px",
                   borderRadius: ".5em",
@@ -93,9 +96,7 @@ export default function Overview() {
                 <Typography
                   variant="caption"
                   textAlign="center"
-                  sx={{
-                    color: "#666",
-                  }}
+                  color="primary.dark"
                 >
                   {label}
                 </Typography>
@@ -107,13 +108,13 @@ export default function Overview() {
                   {num}
                 </Typography>
 
-                <Typography variant="caption" color={"error"}>
+                <Typography variant="caption">
                   <Link
                     component={ReactLink}
                     sx={{
                       textDecoration: "none",
-                      color: baseColor,
-                      fontWeight: "900",
+                      color: 'secondary.main',
+                      fontWeight: "600",
                     }}
                     to={link}
                   >

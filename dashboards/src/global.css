@@ -10,18 +10,18 @@ a {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgba(103, 99, 59);
+    background: #558b2f;
     border-radius: 6px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: rgb(131, 126, 77);
+    background: #82c452;
 }
 
 body {
     /* Firefox */
     /* Note: Firefox uses the scrollbar-color property. */
     /* You may need to add !important to override Firefox's default styles. */
-    scrollbar-color: rgba(103, 99, 59)rgba(199, 184, 45, 0.10);
+    scrollbar-color: #558b2f rgba(199, 184, 45, 0.1);
     scrollbar-width: thin;
 }

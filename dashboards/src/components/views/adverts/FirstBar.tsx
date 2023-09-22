@@ -2,9 +2,9 @@ import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
+import IconButton from "@mui/material/IconButton";
+import Input from "@mui/material/Input";
+import SearchIcon from "@mui/icons-material/Search";
 import useAppStore from "../../../store/app";
 
 type ChipType = {
@@ -55,27 +55,20 @@ export default function FirstBar() {
           handleClick={() => setViewActiveAd(false)}
         />
       </Box>
-      <FormControl
-        variant="standard"
-        sx={{ flexGrow: 1, maxWidth: "450px" }}
-        size="small"
-      >
-        <InputLabel htmlFor="users">Select User</InputLabel>
-        <Select
-          native
-          defaultValue=""
-          id="users"
-          label="Select User"
-          sx={{ px: 0.5 }}
-        >
-          <option value="all"> All </option>
-          <option value={"id"}>Myself</option>
-          <optgroup label="Marketers">
-            <option value={3}>Marketer One</option>
-            <option value={4}>Marketer Two</option>
-          </optgroup>
-        </Select>
-      </FormControl>
+      <>
+        <Box flexGrow={1} sx={{ maxWidth: "450px" }}>
+          <Input
+            id="search"
+            placeholder="Search by ad title..."
+            fullWidth
+            endAdornment={
+              <IconButton aria-label="search">
+                <SearchIcon />
+              </IconButton>
+            }
+          />
+        </Box>
+      </>
       <Divider sx={{ mb: 2 }} />
     </Stack>
   );

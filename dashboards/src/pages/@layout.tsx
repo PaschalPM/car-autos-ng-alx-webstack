@@ -5,7 +5,6 @@ import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
-import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
@@ -16,7 +15,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Dashboard from "@mui/icons-material/Dashboard";
 import Home from "@mui/icons-material/Home";
 import Logout from "@mui/icons-material/Logout";
-
+import MyBreadcrumbs from "../components/MyBreadcrumbs";
 import { BsFillPeopleFill } from "react-icons/bs";
 import { RiAdvertisementFill } from "react-icons/ri";
 import { AiFillProfile } from "react-icons/ai";
@@ -159,9 +158,8 @@ export default function Layout() {
   return (
     <>
       <Box sx={{ display: "flex" }}>
-        <CssBaseline />
         <AppBar position="fixed" open={open}>
-          <Toolbar sx={{ backgroundColor: "white" }}>
+          <Toolbar>
             <IconButton
               aria-label="open drawer"
               onClick={handleDrawerOpen}
@@ -169,23 +167,16 @@ export default function Layout() {
               sx={{
                 marginRight: 5,
                 ...(open && { display: "none" }),
-                color: "rgba(103, 99, 59)",
               }}
             >
               <MenuIcon />
             </IconButton>
             <Grid container spacing={2} alignItems={"center"}>
               <Grid item xs={9} sm={10} lg={11}>
-                <Typography variant="h5" color="#444">
-                  {pageTitle}
-                </Typography>
+                <Typography variant="h5">{pageTitle}</Typography>
               </Grid>
               <Grid item xs={3} sm={2} lg={1}>
-                <Typography
-                  variant="subtitle2"
-                  sx={{ fontSize: ".95em" }}
-                  color="#444"
-                >
+                <Typography variant="subtitle2" sx={{ fontSize: ".95em" }}>
                   Hi {ucfirst(username)}
                 </Typography>
               </Grid>
@@ -228,12 +219,13 @@ export default function Layout() {
               ListItemMainIcon={<Logout />}
               notNav={true}
               handleClick={handleLogout}
-              color="gray"
+              color="secondary.dark"
             />
           </List>
         </Drawer>
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <DrawerHeader />
+          <MyBreadcrumbs/>
           <Box sx={{ position: "relative" }}>
             <Outlet />
           </Box>

@@ -43,7 +43,6 @@ const Login = () => {
       password: Yup.string().min(8).required(),
     }),
     onSubmit: (values, formikHelpers) => {
-      console.log(values, formikHelpers);
       openAlert("Logged in successfully", ()=>{
         resetAlert()
         setUserJWTToken(`${values.username}-${values.password}`)

@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Edit from "@mui/icons-material/Edit";
 
-import { baseColor, urlPath } from "../../../libs/utils";
+import { urlPath } from "../../../libs/utils";
 import { FiUser } from "react-icons/fi";
 import { AiOutlineMail } from "react-icons/ai";
 import { RiLockPasswordLine } from "react-icons/ri";
@@ -21,7 +21,6 @@ const Item = ({ Icon, text }: { Icon: React.ReactNode; text: string }) => (
       display: "flex",
       gap: 1,
       alignItems: "center",
-      color: "#444",
     }}
   >
     <Box>{Icon}</Box>
@@ -34,7 +33,7 @@ export default function MyProfile() {
     <Card sx={{ width:"100%" }}>
       <CardContent>
         <SubHeader>My Profile Summary</SubHeader>
-        <Typography gutterBottom sx={{ color: "#444" }}>
+        <Typography gutterBottom>
           {state.firstname} {state.lastname}
         </Typography>
         <Item Icon={<FiUser />} text={state.username} />
@@ -48,15 +47,8 @@ export default function MyProfile() {
         <Button
           variant="contained"
           size="small"
-          color="inherit"
-          sx={{
-            backgroundColor: baseColor,
-            color: "#fff",
-            mt: 1,
-            "&:hover": {
-              backgroundColor: baseColor,
-            },
-          }}
+          color="secondary"
+          sx={{mt:1}}
           startIcon={<Edit />}
         >
           <Link to={urlPath("my-profile:edit")}>Edit profile</Link>

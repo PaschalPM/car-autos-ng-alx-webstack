@@ -9,7 +9,7 @@ export default function SubHeader({ children, sx }: PropsWithChildren & {
   return (
     <Typography
       variant={"h6"}
-      sx={{ fontWeight: 350, color: baseColor, ...sx }}
+      sx={{ fontWeight: 400, color: "primary.light", ...sx }}
       gutterBottom
     >
       {children}

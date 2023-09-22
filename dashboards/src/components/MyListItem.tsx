@@ -4,7 +4,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { urlPath, isPathActive, baseColor } from "../libs/utils";
+import { urlPath, isPathActive } from "../libs/utils";
 
 type Props = {
   open: boolean;
@@ -26,12 +26,10 @@ const TempListItem = ({
 }: Props & {
   isActive: boolean;
 }) => {
-
   return (
     <ListItemButton
       onClick={() => {
         notNav && handleClick && handleClick();
-
       }}
       sx={{
         minHeight: 48,
@@ -44,7 +42,7 @@ const TempListItem = ({
           minWidth: 0,
           mr: open ? 3 : "auto",
           justifyContent: "center",
-          color: `${isActive ? "#fff" : color ? color : baseColor}`,
+          color: `${isActive ? "#fff" : color ? color : "primary.light"}`,
         }}
       >
         {ListItemMainIcon}
@@ -53,7 +51,7 @@ const TempListItem = ({
         primary={uniqueText}
         sx={{
           opacity: open ? 1 : 0,
-          color: `${isActive ? "#fff" : color ? color : baseColor}`,
+          color: `${isActive ? "#fff" : color ? color : "primary.light"}`,
         }}
       />
     </ListItemButton>
@@ -66,7 +64,7 @@ export default function MyListItem({
   uniqueText,
   color,
   notNav,
-  handleClick
+  handleClick,
 }: Props) {
   const { pathname } = useLocation();
   const isActive = isPathActive(pathname, urlPath(uniqueText));
@@ -85,7 +83,10 @@ export default function MyListItem({
   return (
     <ListItem
       disablePadding
-      sx={{ display: "block", backgroundColor: `${isActive ? baseColor : ""}` }}
+      sx={{
+        display: "block",
+        backgroundColor: `${isActive ? "primary.main" : ""}`,
+      }}
     >
       {notNav ? (
         listItem

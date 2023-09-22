@@ -4,8 +4,6 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import HomeIcon from "@mui/icons-material/Home";
 import LoginIcon from "@mui/icons-material/Login";
-
-import { baseColor } from "../../libs/utils";
 import { Link } from "react-router-dom";
 
 const UnauthorizedPage = () => {
@@ -27,26 +25,19 @@ const UnauthorizedPage = () => {
           </Typography>
           <Button
             variant="contained"
-            color="inherit"
-            sx={{
-              mr: 0.5,
-              backgroundColor: baseColor,
-              color: "#fff",
-              "&:hover": { backgroundColor: baseColor },
-            }}
-            href="/"
+            color="primary"
             startIcon={<HomeIcon />}
             component={Link}
             to={"/"}
           >
-            <Link to={"/"}>Return Home</Link>
+            Return Home
           </Button>
 
           <Button
             variant="contained"
             color="secondary"
             component={Link}
-            startIcon={<LoginIcon/>}
+            startIcon={<LoginIcon />}
             to="/login"
           >
             Return to Login

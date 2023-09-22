@@ -5,7 +5,6 @@ import Paper from "@mui/material/Paper";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import MuiLink from "@mui/material/Link";
 import Edit from "@mui/icons-material/Edit";
 import Add from "@mui/icons-material/Add";
 import Logout from "@mui/icons-material/Logout";
@@ -24,12 +23,9 @@ import { urlPath } from "../../libs/utils";
 
 const Item = ({ Icon, text }: { Icon: React.ReactNode; text: string }) => (
   <Box
-    sx={{
-      display: "flex",
-      gap: 1,
-      alignItems: "center",
-      color: "#444",
-    }}
+    display="flex"
+    alignItems={"center"}
+    gap={1}
   >
     <Box>{Icon}</Box>
     <Typography variant={"body1"} gutterBottom>
@@ -53,8 +49,7 @@ const MyLinkButton = ({
   startIcon,
   handleClick,
 }: MyLinkButtonProps) => (
-  <MuiLink
-    component={Link}
+  <Link
     to={to}
     onClick={(ev) => {
       handleClick && handleClick(ev);
@@ -69,7 +64,7 @@ const MyLinkButton = ({
     >
       {children}
     </Button>
-  </MuiLink>
+  </Link>
 );
 export default function MyProfile() {
   const userProfile = useAppStore((state) => state.userProfile);
@@ -134,7 +129,7 @@ export default function MyProfile() {
                 text={userProfile.isManager ? "manager" : "marketer"}
               />
               <Divider sx={{ marginBottom: "1em" }} />
-              <Typography gutterBottom color={"#444"}>
+              <Typography gutterBottom>
                 Date of Registration: 2 weeks ago
               </Typography>
             </Container>

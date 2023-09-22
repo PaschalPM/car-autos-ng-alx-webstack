@@ -6,7 +6,6 @@ import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import Grid from "@mui/material/Grid";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import IconButton from "@mui/material/IconButton";
 import { Link } from "react-router-dom";
 import useAppStore from "../../../store/app";
 
@@ -37,47 +36,52 @@ export default function DisplayCards() {
           </Typography>
         </Box>
       ) : (
-        carAdverts.filter((ad:CarAdvert)=>ad.isActive === viewActiveAd).map((ad: CarAdvert) => (
-          <Card elevation={1} sx={{ height: "165px", my: 1 }}>
-            <Link to="/">
+        carAdverts
+          .filter((ad: CarAdvert) => ad.isActive === viewActiveAd)
+          .map((ad: CarAdvert) => (
+            <Card elevation={1} sx={{ height: "165px", my: 1 }}>
               <Grid container sx={{ height }}>
-                <Grid item xs={3} md={3}>
-                  <CardMedia
-                    component="img"
-                    loading="lazy"
-                    sx={{ height }}
-                    image={ad.thumbnail}
-                    alt="Live from space album cover"
-                  />
-                </Grid>
-                <Grid item xs={9} md={7} sx={{ padding: 2 }}>
-                  <Typography
-                    variant="h6"
-                    sx={{ fontSize: `${fontSize * 1.2}em` }}
-                    gutterBottom
-                  >
-                    {ad.title}
-                  </Typography>
-                  <Typography gutterBottom sx={{ fontSize: `${fontSize}em` }}>
-                    {ad.price}
-                  </Typography>
-                  {ad.isActive ? (
+                <Link to="/">
+                  <Grid item xs={3} md={3}>
+                    <CardMedia
+                      component="img"
+                      loading="lazy"
+                      sx={{ height }}
+                      image={ad.thumbnail}
+                      alt="Live from space album cover"
+                    />
+                  </Grid>
+                  <Grid item xs={9} md={7} sx={{ p: 1.5 }}>
                     <Typography
-                      sx={{ fontSize: `${fontSize * 0.85}em` }}
-                      color="green"
+                      variant="h6"
+                      sx={{ fontSize: `${fontSize * 1.1}em` }}
+                      gutterBottom
                     >
-                      Active
+                      {ad.title}
                     </Typography>
-                  ) : (
                     <Typography
-                      sx={{ fontSize: `${fontSize * 0.85}em` }}
-                      color="red"
+                      gutterBottom
+                      sx={{ fontSize: `${fontSize * 0.9}em` }}
                     >
-                      Inactive
+                      {ad.price}
                     </Typography>
-                  )}
-                </Grid>
-
+                    {ad.isActive ? (
+                      <Typography
+                        sx={{ fontSize: `${fontSize * 0.8}em` }}
+                        color="primary.light"
+                      >
+                        Active
+                      </Typography>
+                    ) : (
+                      <Typography
+                        sx={{ fontSize: `${fontSize * 0.85}em` }}
+                        color="secondary.light"
+                      >
+                        Inactive
+                      </Typography>
+                    )}
+                  </Grid>
+                </Link>
                 <Grid
                   item
                   xs={12}
@@ -89,9 +93,8 @@ export default function DisplayCards() {
                   </Link>
                 </Grid>
               </Grid>
-            </Link>
-          </Card>
-        ))
+            </Card>
+          ))
       )}
     </Stack>
   );

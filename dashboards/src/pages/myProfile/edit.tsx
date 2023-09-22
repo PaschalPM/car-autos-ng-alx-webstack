@@ -5,7 +5,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 import MyAlert from "../../components/prompts/MyAlert";
 import Save from "@mui/icons-material/Save";
 import MyTextField from "../../components/formFields/MyTextField";
-import { baseColor } from "../../libs/utils";
 import { useState } from "react";
 import { hasFormChanged } from "../../libs/utils";
 import useAppStore from "../../store/app";
@@ -67,6 +66,7 @@ export default function EditProfile() {
                 rowGap: 2,
                 px: 1,
                 p: 2,
+                pt: 3
               }}
             >
               {fields.map(({ name, label, type }) => (
@@ -96,7 +96,7 @@ export default function EditProfile() {
                 }}
                 disabled={true}
               />
-              <Stack width="350px" direction={"row"} spacing={2}>
+              <Stack width="400px" direction={"row"} spacing={2}>
                 <Button
                   variant="contained"
                   color="inherit"
@@ -110,13 +110,6 @@ export default function EditProfile() {
                     formik.isSubmitting
                   }
                   type="submit"
-                  sx={{
-                    backgroundColor: baseColor,
-                    color: "#fff",
-                    "&:hover": {
-                      backgroundColor: baseColor,
-                    },
-                  }}
                   startIcon={<Save />}
                 >
                   {!formik.isSubmitting ? (
@@ -127,7 +120,7 @@ export default function EditProfile() {
 
                         Saving changes
                       </span>
-                      <CircularProgress size={15} sx={{ color: "#a6a6a6" }} />
+                      <CircularProgress size={15} />
                     </>
                   )}
                 </Button>
