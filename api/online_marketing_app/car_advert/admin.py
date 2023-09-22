@@ -38,9 +38,8 @@ class CarAdvertAdminForm(forms.ModelForm):
 
 
 class ImageInline(admin.TabularInline):
-    """th"""
+    """this class configuration adds the Image model to the CarAdvertModelAdmin."""
     model = Image
-    #fields = ('image',)
     extra = 1
     exclude = ('advertisement_images',)
     readonly_fields = ('id',)
