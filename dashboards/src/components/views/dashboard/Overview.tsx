@@ -44,7 +44,7 @@ const overviewElementsGenerator = (isManager: boolean | undefined) :OverviewType
 export default function Overview() {
   const {isManager} = useAppStore((state) => state.userProfile)
   return (
-    <Card sx={{marginBottom:2}}>
+    <Card sx={{marginBottom:2, width:"100%"}}>
       <CardContent>
         <SubHeader>
           Overview

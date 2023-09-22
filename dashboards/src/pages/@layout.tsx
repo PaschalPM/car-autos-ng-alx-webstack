@@ -8,6 +8,7 @@ import List from "@mui/material/List";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
+import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
@@ -23,7 +24,6 @@ import { Outlet } from "react-router-dom";
 import MyListItem from "../components/MyListItem";
 import useAppStore from "../store/app";
 import { ucfirst } from "../libs/utils";
-import SubHeader from "../components/typography/SubHeader";
 import { useNavigate } from "react-router-dom";
 import MySnackbar from "../components/prompts/MySnackbar";
 import MyAlert from "../components/prompts/MyAlert";
@@ -101,12 +101,11 @@ const Drawer = styled(MuiDrawer, {
 
 export default function Layout() {
   const { username, isManager } = useAppStore((state) => state.userProfile);
-  const resetUserJWTToken = useAppStore((state) => state.resetUserJWTToken);
-  const resetUserProfile = useAppStore((state) => state.resetUserProfile);
+  const logout = useAppStore((state) => state.logout);
   const openSnackbar = useAppStore((state) => state.openSnackbar);
   const resetSnackbar = useAppStore((state) => state.resetSnackbar);
   const openAlert = useAppStore((state) => state.openAlert);
-  const resetAlert = useAppStore((state) => state.resetAlert);
+  const pageTitle = useAppStore((state) => state.pageTitle);
   const navigate = useNavigate();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -121,11 +120,8 @@ export default function Layout() {
         openAlert(
           "Logged out.",
           () => {
-            resetUserJWTToken();
-            resetUserProfile();
             navigate("/");
-            resetAlert();
-            resetSnackbar();
+            logout();
           },
           "success"
         );
@@ -142,8 +138,8 @@ export default function Layout() {
 
   const listGenerator = (isManager: boolean | undefined) => {
     return isManager
-      ? ["Dashboard", "My Marketers", "My Adverts", "My Details"]
-      : ["Dashboard", "My Adverts", "My Details"];
+      ? ["Dashboard", "My Marketers", "My Adverts", "My Profile"]
+      : ["Dashboard", "My Adverts", "My Profile"];
   };
   const firstListIconsGen = (isManager: boolean | undefined) => {
     return isManager
@@ -178,11 +174,22 @@ export default function Layout() {
             >
               <MenuIcon />
             </IconButton>
-
-            <Typography color="rgba(103, 99, 59)" noWrap component="div">
-              <Typography variant="caption">Welcome Back!</Typography>
-              <SubHeader sx={{ mt: -1 }}>{ucfirst(username)}</SubHeader>
-            </Typography>
+            <Grid container spacing={2} alignItems={"center"}>
+              <Grid item xs={9} sm={10} lg={11}>
+                <Typography variant="h5" color="#444">
+                  {pageTitle}
+                </Typography>
+              </Grid>
+              <Grid item xs={3} sm={2} lg={1}>
+                <Typography
+                  variant="subtitle2"
+                  sx={{ fontSize: ".95em" }}
+                  color="#444"
+                >
+                  Hi {ucfirst(username)}
+                </Typography>
+              </Grid>
+            </Grid>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
