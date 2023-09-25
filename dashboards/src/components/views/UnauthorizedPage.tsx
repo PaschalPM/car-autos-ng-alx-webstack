@@ -39,6 +39,9 @@ const UnauthorizedPage = () => {
             component={Link}
             startIcon={<LoginIcon />}
             to="/login"
+            sx={{
+              ml:1
+            }}
           >
             Return to Login
           </Button>

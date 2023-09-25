@@ -13,42 +13,53 @@ import { urlPath } from "../../../libs/utils";
 import SubHeader from "../../typography/SubHeader";
 import useAppStore from "../../../store/app";
 
-type OverviewType = {label:string, num:number, link:string, icon:React.ReactNode}
+type OverviewType = {
+  label: string;
+  num: number;
+  link: string;
+  icon: React.ReactNode;
+};
 const overviewElements: OverviewType[] = [
-    {
-        label: 'Total Marketers',
-        num: 5,
-        link: urlPath('My Marketers'),
-        icon: <BsFillPeopleFill size={24}/>
-    },
-    {
-        label: 'Total Adverts',
-        num: 200,
-        link: urlPath('My Adverts'),
-        icon: <RiAdvertisementFill size={24}/>
-    },
-    {
-        label: 'Inactive Adverts',
-        num: 100,
-        link: urlPath('My Adverts'),
-        icon: <RiAdvertisementFill size={24}/>
-    },
+  {
+    label: "Total Marketers",
+    num: 5,
+    link: urlPath("My Marketers"),
+    icon: <BsFillPeopleFill size={24} />,
+  },
+  {
+    label: "Total Adverts",
+    num: 200,
+    link: urlPath("My Adverts"),
+    icon: <RiAdvertisementFill size={24} />,
+  },
+  {
+    label: "Inactive Adverts",
+    num: 100,
+    link: urlPath("My Adverts"),
+    icon: <RiAdvertisementFill size={24} />,
+  },
+];
 
-]
-
-const overviewElementsGenerator = (isManager: boolean | undefined) :OverviewType[] => {
-  if (isManager) return overviewElements
-  return overviewElements.slice(1)
-}
+const overviewElementsGenerator = (
+  isManager: boolean | undefined
+): OverviewType[] => {
+  if (isManager) return overviewElements;
+  return overviewElements.slice(1);
+};
 
 export default function Overview() {
-  const {isManager} = useAppStore((state) => state.userProfile)
+  const { isManager } = useAppStore((state) => state.userProfile);
   return (
-    <Card sx={{marginBottom:2, width:"100%"}}>
-      <CardContent>
-        <SubHeader>
-          Overview
-        </SubHeader>
+    <Card sx={{ marginBottom: 2, width: "100%" }}>
+      <CardContent
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <SubHeader sx={{ alignSelf: "flex-start" }}>Overview</SubHeader>
         <Stack
           direction={{ xs: "column", sm: "row" }}
           spacing={3}
@@ -60,70 +71,71 @@ export default function Overview() {
             justifyContent: "space-between",
           }}
         >
-          {overviewElementsGenerator(isManager as boolean).map(({label, num, link, icon}) => (
-            <Paper
-              key={label}
-              elevation={2}
-              sx={{
-                display: "flex",
-                justifyContent: "space-evenly",
-                alignItems: "center",
-                p:1.5,
-                gap:1,
-                
-              }}
-            >
-              <Box
-                sx={{
-                  backgroundColor: 'primary.light',
-                  width: "40px",
-                  height: "40px",
-                  borderRadius: ".5em",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                { icon }
-              </Box>
-              <Box
+          {overviewElementsGenerator(isManager as boolean).map(
+            ({ label, num, link, icon }) => (
+              <Paper
+                key={label}
+                elevation={2}
                 sx={{
                   display: "flex",
-                  flexDirection: "column",
+                  justifyContent: "space-evenly",
                   alignItems: "center",
+                  p: 1.5,
+                  gap: 1,
                 }}
               >
-                <Typography
-                  variant="caption"
-                  textAlign="center"
-                  color="primary.dark"
+                <Box
+                  sx={{
+                    backgroundColor: "primary.light",
+                    width: "40px",
+                    height: "40px",
+                    borderRadius: ".5em",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
                 >
-                  {label}
-                </Typography>
-                <Typography
-                  sx={{ fontWeight: "900" }}
-                  variant={"h4"}
-                  textAlign={"center"}
+                  {icon}
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
                 >
-                  {num}
-                </Typography>
-
-                <Typography variant="caption">
-                  <Link
-                    component={ReactLink}
-                    sx={{
-                      textDecoration: "none",
-                      color: 'secondary.main',
-                      fontWeight: "600",
-                    }}
-                    to={link}
+                  <Typography
+                    variant="caption"
+                    textAlign="center"
+                    color="primary.dark"
                   >
-                    view all
-                  </Link>
-                </Typography>
-              </Box>
-            </Paper>
-          ))}
+                    {label}
+                  </Typography>
+                  <Typography
+                    sx={{ fontWeight: "900" }}
+                    variant={"h4"}
+                    textAlign={"center"}
+                  >
+                    {num}
+                  </Typography>
+
+                  <Typography variant="caption">
+                    <Link
+                      component={ReactLink}
+                      sx={{
+                        textDecoration: "none",
+                        color: "secondary.main",
+                        fontWeight: "600",
+                      }}
+                      to={link}
+                    >
+                      view all
+                    </Link>
+                  </Typography>
+                </Box>
+              </Paper>
+            )
+          )}
         </Stack>
       </CardContent>
     </Card>

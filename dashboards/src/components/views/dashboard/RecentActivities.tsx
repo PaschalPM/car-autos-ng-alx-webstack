@@ -8,7 +8,6 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import Paper from "@mui/material/Paper";
 
-
 import { supportColor } from "../../../libs/utils";
 import { ACTIVITIES, type RecentActivity } from "../../../libs/faker/log";
 import { useTable } from "react-table";
@@ -65,21 +64,19 @@ export default function RecentActivities() {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data });
   return (
-    <Card sx={{ width:"100%" }}>
+    <Card sx={{ width: "100%" }}>
       <CardContent>
-        <SubHeader>Recent Activities</SubHeader>
+        <SubHeader sx={{alignSelf:'flex-start'}}>Recent Activities</SubHeader>
         <TableContainer
           component={Paper}
           sx={{ maxHeight: "70vh", overflow: "auto" }}
         >
-          <Table {...getTableProps()}>
-            <TableHead sx={{ background: 'primary.main' }}>
+          <Table {...getTableProps()} sx={{width:'100%'}}>
+            <TableHead sx={{ background: "primary.main" }}>
               {headerGroups.map((headerGroup, idx) => (
-                <TableRow  { ...headerGroup.getHeaderGroupProps()} key={idx}>
+                <TableRow {...headerGroup.getHeaderGroupProps()} key={idx}>
                   {headerGroup.headers.map((header) => (
-                    <TableCell
-                      {...header.getHeaderProps}
-                    >
+                    <TableCell {...header.getHeaderProps}>
                       {header.render("Header")}
                     </TableCell>
                   ))}
@@ -91,7 +88,7 @@ export default function RecentActivities() {
                 prepareRow(row);
                 return (
                   <TableRow
-                    sx={{ background: `${(idx % 2) ? supportColor : ""}` }}
+                    sx={{ background: `${idx % 2 ? supportColor : ""}` }}
                     {...row.getRowProps()}
                     key={idx}
                   >
