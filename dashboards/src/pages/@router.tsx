@@ -41,6 +41,7 @@ const router = createBrowserRouter(
         <Route path="my-marketers" element={<Marketers />} />
         <Route path="my-marketers/new" element={<>New Marketer</>} />
         <Route path="my-adverts" element={<Adverts />} />
+        <Route path="my-adverts/:id" element={<div> Details </div>}/>
         <Route path="my-adverts/new" element={<AddAdvert/>} />
         <Route path="my-profile" element={<MyProfile />} />
         <Route path="my-profile/edit" element={<EditProfile/>}/>

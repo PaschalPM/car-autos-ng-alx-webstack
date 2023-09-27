@@ -27,6 +27,23 @@ export const hasFormChanged = <T>(initialObj: T, newObj: T) => {
 }
 
 export const ucfirst = (str: string) => str.slice(0, 1).toUpperCase() + str.slice(1).toLowerCase()
+export const snippet = (str: string, numOfChar: number = 50) => str.length >= numOfChar ? str.slice(0, numOfChar) + ' ...' : str
+
+export function formatNaira(number:number) {
+  // Ensure the number is a valid numeric value
+  if (typeof number !== 'number' || isNaN(number)) {
+    return 'Invalid Number';
+  }
+
+  // Convert the number to a string with commas for thousands separator
+  const formattedNumber = number.toLocaleString('en-NG', {
+    style: 'currency',
+    currency: 'NGN',
+    minimumFractionDigits: 2,
+  });   
+
+  return formattedNumber;
+}
 
 export const supportColor = "rgba(199, 184, 45, 0.10)"
 export const lightColor = "rgb(205, 198, 121)"

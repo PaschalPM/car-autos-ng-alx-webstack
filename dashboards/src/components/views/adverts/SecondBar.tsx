@@ -10,7 +10,7 @@ export default function SeondBar() {
         sx={{ width: "100%", maxWidth: "300px", my: 2 }}
         size="small"
       >
-        <InputLabel htmlFor="users">Select User(s)</InputLabel>
+        <InputLabel htmlFor="users">Select User</InputLabel>
         <Select
           native
           defaultValue=""

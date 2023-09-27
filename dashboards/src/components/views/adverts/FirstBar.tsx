@@ -59,7 +59,7 @@ export default function FirstBar() {
         <Box flexGrow={1} sx={{ maxWidth: "450px" }}>
           <Input
             id="search"
-            placeholder="Search by ad title..."
+            placeholder="I am looking for..."
             fullWidth
             endAdornment={
               <IconButton aria-label="search">

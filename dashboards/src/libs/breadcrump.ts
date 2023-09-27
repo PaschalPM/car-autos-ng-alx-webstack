@@ -3,11 +3,13 @@ type BreadCrumbMap = {
   title: string;
 };
 
-const transformPath4Breadcrumbs = (subPath: string) =>
-  subPath.replace(/(^.|-.)/g, (m) => {
+const transformPath4Breadcrumbs = (subPath: string) =>{
+  if (subPath.length >= 36) return 'Details'
+  return subPath.replace(/(^.|-.)/g, (m) => {
     if (m.startsWith("-")) return " " + m[1].toUpperCase();
     return m.toUpperCase();
   });
+}
 
 export const pathBreadcrumbMapper = (): BreadCrumbMap[] => {
   const { pathname } = location;
