@@ -13,12 +13,18 @@ import BeforeEnter from "../components/views/BeforeEnter";
 import NotFoundPage from "../components/views/NotFoundPage";
 import EditProfile from "./myProfile/edit";
 import AddAdvert from "./adverts/new";
+import CarAdvertDetails from "./adverts/details";
+import ImageFullScreenSlider from "../components/ImageFullScreenSlider";
 import { Link } from "react-router-dom";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
       <Route path="login" element={<Login />} />
+      <Route
+          path="fullscreen-image-display"
+          element={<ImageFullScreenSlider />}
+        />
       <Route
         path="/"
         element={
@@ -41,10 +47,10 @@ const router = createBrowserRouter(
         <Route path="my-marketers" element={<Marketers />} />
         <Route path="my-marketers/new" element={<>New Marketer</>} />
         <Route path="my-adverts" element={<Adverts />} />
-        <Route path="my-adverts/:id" element={<div> Details </div>}/>
-        <Route path="my-adverts/new" element={<AddAdvert/>} />
+        <Route path="my-adverts/:id" element={<CarAdvertDetails />} />
+        <Route path="my-adverts/new" element={<AddAdvert />} />
         <Route path="my-profile" element={<MyProfile />} />
-        <Route path="my-profile/edit" element={<EditProfile/>}/>
+        <Route path="my-profile/edit" element={<EditProfile />} />
       </Route>
       <Route path="*" element={<NotFoundPage />} />
     </Route>

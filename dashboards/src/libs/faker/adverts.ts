@@ -1,22 +1,58 @@
 export const carAdverts = [
-    {
-        id: "f47ac10b-58cc-4372-a567-0e02b2c3d479yu",
-        title: "A brand new honda for sale",
-        price: "20000000",
-        isActive: true,
-        thumbnail: "http://localhost:3000/cars/honda/20171024_162634.jpg",
-        images: [
-            "image-1", "image-2", "image-3", "image-4"
-        ]
-    },
-    {
-        id: "f47ac10b-58cc-4372-a567-0e02b2c3d47990",
-        title: "A brand new toyota corolla for sale",
-        price: "45000000",
-        isActive: false,
-        thumbnail: "http://localhost:3000/cars/toyota/IMG-20171030-WA0017.jpg",
-        images: [
-            "image-1", "image-2", "image-3", "image-4", "image-5"
-        ]
-    }
-]
+  {
+    id: "f47ac10b-58cc-4372-a567-0e02b2c3d479yu",
+    title: "A brand new honda for sale",
+    price: "60000000",
+    isActive: true,
+    thumbnail: "/cars/honda/20171024_162634.jpg",
+    images: [
+      "/cars/honda/20171024_162634.jpg",
+      "https://picsum.photos/id/2/600/900",
+      "https://picsum.photos/id/3/600/900",
+      "https://picsum.photos/id/4/600/900",
+      "https://picsum.photos/id/5/600/900",
+      "https://picsum.photos/id/6/600/900",
+      "https://picsum.photos/id/7/600/900",
+      "https://picsum.photos/id/7/600/900",
+      "https://picsum.photos/id/7/600/900",
+      "https://picsum.photos/id/7/600/900",
+    ],
+    created_at: new Date().toISOString(),
+    state: "Lagos",
+    city: "Yaba",
+    brand: "Honda",
+    model: "Civic",
+    year: 2000,
+    fuelType: "Petrol",
+    description:
+      "With low mileage and a clean title, this 2000 Honda Civic is a fantastic opportunity to own a reliable and timeless vehicle that's ready for your daily commute or weekend adventures. Don't miss your chance to own a piece of automotive history. Contact us today to schedule a test drive and make this Civic yours!",
+    phoneNumber: "07031102089",
+    email: "okaforpaschal018@gmail.com",
+  },
+  {
+    id: "f47ac10b-58cc-4372-a567-0e02b2c3d47990",
+    title: "A brand new toyota corolla for sale",
+    price: "45000000",
+    isActive: false,
+    thumbnail: "/cars/toyota/IMG-20171030-WA0017.jpg",
+    images: [
+      "/cars/toyota/IMG-20171030-WA0017.jpg",
+      "https://picsum.photos/id/12/600/900",
+      "https://picsum.photos/id/13/600/900",
+      "https://picsum.photos/id/14/600/900",
+      "https://picsum.photos/id/15/600/900",
+      "https://picsum.photos/id/16/600/900",
+    ],
+    created_at: new Date().toISOString(),
+    state: "Kaduna",
+    city: "Barnawa",
+    brand: "Toyota",
+    model: "Corolla",
+    year: 2000,
+    fuelType: "Petrol",
+    description:
+      "Selling a sleek 2008 Toyota Corolla – a reliable and efficient choice. This well-maintained sedan boasts a 1.8L engine, automatic transmission, and comfortable interior. Low mileage and clean title. Your perfect daily driver. Contact us today!",
+    phoneNumber: "07031102089",
+    email: "okaforpaschal018@gmail.com",
+  },
+];

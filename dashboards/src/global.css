@@ -25,3 +25,12 @@ body {
     scrollbar-color: #558b2f rgba(199, 184, 45, 0.1);
     scrollbar-width: thin;
 }
+.carousel .thumb img{
+    /* width: 60px!important; */
+    height: 60px!important;
+    object-fit: cover;
+}
+
+.carousel {
+    text-align: center;
+}

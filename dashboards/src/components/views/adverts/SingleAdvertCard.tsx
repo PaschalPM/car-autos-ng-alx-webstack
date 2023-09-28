@@ -11,8 +11,8 @@ import MySwitch from "../../formFields/MySwitch";
 import IconButton from "@mui/material/IconButton";
 import { BsTrash } from "react-icons/bs";
 import { snippet, formatNaira } from "../../../libs/utils";
-import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import { urlPath } from "../../../libs/utils";
+import ImageCountDisplay from "../../ImageCountDisplay";
 
 
 type CardProps<T> = {
@@ -51,39 +51,26 @@ function CustomizedCard({
   return (
     <Card sx={{ my: 2 }}>
       <Box display={isLgMQ ? "flex" : ""} justifyContent={"space-between"}>
-        <Link to={urlPath(`my-adverts:${data.id}`)} style={{ flex:1 }}>
-          <Stack
-            direction="row"
-            spacing={0.5}
-            pt={0.5}
-            position={"relative"}
-          >
-            <CardMedia
-              component="img"
-              alt="Sample Image"
-              image={data.thumbnail}
-              title="Sample Image"
-              loading="lazy"
-              sx={{
-                p: 1,
-                width: style.imgSize,
-                height: style.imgSize,
-                objectFit: "cover",
-                mt: 1,
-                mb: -2,
-              }}
-            />
-
-            <Box
-              display="flex"
-              position={"absolute"}
-              gap={0.5}
-              bottom={10}
-              left={5}
-            >
-              <PhotoCameraIcon />
-              <Typography> {data.images.length} </Typography>
+        <Link to={urlPath(`my-adverts:${data.id}`)} style={{ flex: 1 }}>
+          <Stack direction="row" spacing={isLgMQ ? 1 : 0.5}>
+            <Box position="relative">
+              <CardMedia
+                component="img"
+                alt="Sample Image"
+                image={data.thumbnail}
+                title="Sample Image"
+                loading="lazy"
+                sx={{
+                  p: 1,
+                  width: style.imgSize,
+                  height: style.imgSize,
+                  objectFit: "cover",
+                  mb: -2,
+                }}
+              />
+              <ImageCountDisplay imageCount={data.images.length}/>
             </Box>
+
             <Box flex="1" sx={{ mt: 2, pt: 0.5 }}>
               <Typography gutterBottom sx={{ fontSize: style.titleSize }}>
                 {snippet(data.title)}
