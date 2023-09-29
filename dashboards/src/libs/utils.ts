@@ -62,5 +62,10 @@ export const contactHrefGenerator = (
   )}&body=${encodeURIComponent(textOrBody)}`;
 };
 
+export function dialNumber(phoneNumber:string) {
+   // Open the phone dialer with the specified number
+  window.location.href = 'tel:' + phoneNumber;
+}
+
 export const supportColor = "rgba(199, 184, 45, 0.10)";
 export const lightColor = "rgb(205, 198, 121)";

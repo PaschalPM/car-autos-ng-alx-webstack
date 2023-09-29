@@ -7,13 +7,14 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { carAdverts } from "../../../libs/faker/adverts";
 import { Link } from "react-router-dom";
-import MySwitch from "../../formFields/MySwitch";
-import IconButton from "@mui/material/IconButton";
-import { BsTrash } from "react-icons/bs";
 import { snippet, formatNaira } from "../../../libs/utils";
 import { urlPath } from "../../../libs/utils";
 import ImageCountDisplay from "../../ImageCountDisplay";
-
+import {
+  ToggleEnableDisableButton,
+  DeleteButton,
+  EditButton,
+} from "../../AdvertCardButtons";
 
 type CardProps<T> = {
   data: T;
@@ -32,7 +33,6 @@ function CustomizedCard({
     otherSize: ".75em",
     deleteSize: 15,
   };
-  const theme = useTheme();
 
   if (isMdMQ) {
     style.imgSize = "120px";
@@ -68,7 +68,7 @@ function CustomizedCard({
                   mb: -2,
                 }}
               />
-              <ImageCountDisplay imageCount={data.images.length}/>
+              <ImageCountDisplay imageCount={data.images.length} />
             </Box>
 
             <Box flex="1" sx={{ mt: 2, pt: 0.5 }}>
@@ -92,17 +92,18 @@ function CustomizedCard({
           flexDirection={isLgMQ ? "column" : "row"}
           alignItems={isLgMQ ? "flex-start" : ""}
           justifyContent="center"
-          gap={3}
+          gap={1.5}
+          columnGap={5}
           px={1}
+          sx={{
+            opacity: isLgMQ ? 0 : 1,
+            transition: 'all 0.3s ease',
+            "&:hover": { opacity: 1 },
+          }}
         >
-          <MySwitch
-            label=""
-            initialCheckState={data.isActive}
-            handleChange={() => {}}
-          />
-          <IconButton>
-            <BsTrash color={theme.palette.error.main} size={style.deleteSize} />
-          </IconButton>
+          <EditButton />
+          <ToggleEnableDisableButton isActive={data.isActive} />
+          <DeleteButton />
         </Box>
       </Box>
     </Card>

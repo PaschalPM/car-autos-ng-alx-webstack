@@ -38,7 +38,7 @@ type MyLinkButtonProps = React.PropsWithChildren & {
   to: string;
   variant: "outlined" | "contained";
   startIcon: React.ReactNode;
-  color: "success" | "error" | "secondary" | "primary";
+  color: "success" | "error" | "secondary" | "primary" | "info";
   handleClick?: React.MouseEventHandler<HTMLAnchorElement> | undefined;
 };
 const MyLinkButton = ({
@@ -146,7 +146,7 @@ export default function MyProfile() {
           <MyLinkButton
             to="edit"
             variant="outlined"
-            color="success"
+            color="info"
             startIcon={<Edit />}
           >
             Edit Profile

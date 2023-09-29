@@ -3,6 +3,7 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
+import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import useAppStore from "../../store/app";
 import { useEffect } from "react";
@@ -15,7 +16,20 @@ import CreationStateInfo from "../../components/views/advert-details/CreationSta
 import OtherDetailedInfo from "../../components/views/advert-details/OtherDetailedInfo";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import EmailIcon from "@mui/icons-material/Email";
-import { contactHrefGenerator } from "../../libs/utils";
+import {
+  contactHrefGenerator,
+  dialNumber,
+  formatNaira,
+  urlPath
+} from "../../libs/utils";
+import {
+  DeleteButton,
+  EditButton,
+  ToggleEnableDisableButton,
+} from "../../components/AdvertCardButtons";
+import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
+import { useNavigate } from "react-router-dom";
+
 
 const whatsappHref = (whatsappNum: string) => {
   const { href } = location;
@@ -37,13 +51,15 @@ export default function CarAdvertDetails() {
   const setPageTitle = useAppStore((state) => state.setPageTitle);
   const theme = useTheme();
   const mdMatch = useMediaQuery(theme.breakpoints.up("md"));
+  const customMatch = useMediaQuery(theme.breakpoints.between(899, 1122));
+  const navigate = useNavigate();
 
   useEffect(() => {
     setPageTitle("Advert Details");
   }, []);
 
   return (
-    <Stack spacing={2} direction={{ md: "row" }}>
+    <Stack spacing={2} rowGap={4} direction={{ md: "row" }}>
       <Paper
         sx={{
           flex: 1,
@@ -82,11 +98,61 @@ export default function CarAdvertDetails() {
         </Box>
       </Paper>
       <Stack flex={1}>
-        <Paper>
-          <div> Price </div>
+        <Paper sx={{ mb: 2, py: 3 }}>
+          <Container>
+            <Typography
+              variant={customMatch ? "h5" : "h4"}
+              gutterBottom
+              textAlign={"center"}
+            >
+              {formatNaira(parseInt(carAdverts[0].price))}
+            </Typography>
+            <Button
+              variant="outlined"
+              fullWidth
+              size="large"
+              onClick={() => dialNumber(carAdverts[0].phoneNumber)}
+            >
+              Call Now
+            </Button>
+          </Container>
         </Paper>
-        <Paper>
-          <div> Actions </div>
+        <Paper sx={{ mb: 2, py: 3 }}>
+          <Container
+            sx={{
+              display: "flex",
+              justifyContent: "space-around",
+              flexWrap: "wrap",
+              rowGap: 2,
+            }}
+          >
+            <EditButton isForAdDetails={true} />
+            <ToggleEnableDisableButton
+              isActive={carAdverts[0].isActive}
+              isForAdDetails={true}
+            />
+            <DeleteButton isForAdDetails={true} />
+          </Container>
+        </Paper>
+        <Paper sx={{ mb: 2, py: 3 }}>
+          <Container
+            sx={{
+              display: "flex",
+              justifyContent: "space-around",
+              flexWrap: "wrap",
+              rowGap: 2,
+            }}
+          >
+            <Button
+              variant="outlined"
+              size="large"
+              fullWidth
+              startIcon={<CreateOutlinedIcon />}
+              onClick={()=>navigate(urlPath('My Adverts:new'))}
+            >
+              Create Advert
+            </Button>
+          </Container>
         </Paper>
       </Stack>
     </Stack>
