@@ -10,9 +10,7 @@ export default function DisplayAdvertCards() {
       ? carAdverts.filter((carAd) => carAd.isActive)
       : carAdverts.filter((carAd) => !carAd.isActive);
   }, [viewActiveAd]);
-  return filteredCarAdverts.map((carAd) => (
-    <>
-      <SingleAdvertCard key={carAd.id} carAdvert={carAd} />
-    </>
+  return filteredCarAdverts.map((carAd, idx) => (
+    <SingleAdvertCard key={idx} carAdvert={carAd} />
   ));
 }

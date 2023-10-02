@@ -75,8 +75,8 @@ export default function RecentActivities() {
             <TableHead sx={{ background: "primary.main" }}>
               {headerGroups.map((headerGroup, idx) => (
                 <TableRow {...headerGroup.getHeaderGroupProps()} key={idx}>
-                  {headerGroup.headers.map((header) => (
-                    <TableCell {...header.getHeaderProps}>
+                  {headerGroup.headers.map((header, idx) => (
+                    <TableCell {...header.getHeaderProps({key: idx})}>
                       {header.render("Header")}
                     </TableCell>
                   ))}

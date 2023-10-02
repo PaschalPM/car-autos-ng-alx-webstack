@@ -6,11 +6,11 @@ import { styled } from "@mui/material";
 
 const MyCarousel = styled(Carousel)({
   ".slide": {
-     '&:hover': {
-      cursor:'pointer'
-     }
-  }
-})
+    "&:hover": {
+      cursor: "pointer",
+    },
+  },
+});
 
 type Props = {
   images: string[];
@@ -30,8 +30,8 @@ export default function ImageSlider({ images }: Props) {
         })
       }
     >
-      {images.map((img) => (
-        <Box maxHeight={"400px"}>
+      {images.map((img, idx) => (
+        <Box key={idx} maxHeight={"400px"}>
           <img
             src={img}
             style={{ width: "100%", height: "400px", objectFit: "cover" }}

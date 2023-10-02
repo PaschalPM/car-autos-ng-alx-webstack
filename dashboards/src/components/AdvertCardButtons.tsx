@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import { useTheme, useMediaQuery } from "@mui/material";
 
 const smallSize = 18;
-const normalSize = 24;
+const normalSize = 21;
 
 type Props = {
   isForAdDetails?: boolean;

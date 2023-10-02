@@ -1,22 +1,26 @@
-import useAppStore from "../../store/app";
-import { useEffect } from "react";
 import Container from "@mui/material/Container";
-import Paper from "@mui/material/Paper";
+import usePageTitleSetter from "../../libs/hooks/setPageTitle";
+import { Formik, Form, FormikProps } from "formik";
+import Header from "../../components/views/new-advert/header";
+import Body from "../../components/views/new-advert/body";
+import formikConfig, {
+  type CarAdvert,
+} from "../../libs/form-configs/new-advert";
+
 
 export default function AddAdvert() {
-  const setPageTitle = useAppStore((state) => state.setPageTitle);
+  usePageTitleSetter("Post Advert");
 
-  useEffect(() => {
-    setPageTitle("Adverts");
-    // eslint-disable-next-line
-  }, []);
   return (
-    <Container maxWidth={"sm"} disableGutters>
-      <Paper>
-        <Container  >
-          Hello
+    <Formik {...formikConfig}>
+      {({ initialValues }: FormikProps<CarAdvert>) => (
+        <Container maxWidth={"sm"} disableGutters>
+          <Form>
+            <Header />
+            <Body initialValues={initialValues} />
+          </Form>
         </Container>
-      </Paper>
-    </Container>
+      )}
+    </Formik>
   );
 }

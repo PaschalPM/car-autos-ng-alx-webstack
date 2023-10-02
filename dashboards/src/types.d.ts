@@ -19,7 +19,6 @@ type Alert = Prompt & {
   handleClose?: () => void;
 };
 
-
 type Snackbar = Prompt & {
   actionCb: () => void | undefined;
   onClose: () => void | undefined;
@@ -31,4 +30,24 @@ type CarAdvert = {
   price: string;
   isActive: boolean;
   thumbnail: string;
-}
+};
+
+type ImageWithPreview = {
+  file: File;
+  preview: string;
+};
+
+type CloudinaryResponse = {
+  secure_url: string;
+  existing?: boolean;
+  original_filename?: string;
+};
+
+type DialogType = {
+  open: boolean;
+  title: string;
+  description: string;
+  imgSrc?: string;
+  textCenter?: boolean;
+  handleClose?: (idx: number) => void;
+};

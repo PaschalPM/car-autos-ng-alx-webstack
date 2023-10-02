@@ -1,3 +1,4 @@
+import usePageTitleSetter from "../../libs/hooks/setPageTitle";
 import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
@@ -5,8 +6,6 @@ import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import useAppStore from "../../store/app";
-import { useEffect } from "react";
 import { carAdverts } from "../../libs/faker/adverts";
 import ImageSlider from "../../components/ImageSlider";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -48,15 +47,13 @@ const emailHref = (emailAddress: string) => {
 };
 
 export default function CarAdvertDetails() {
-  const setPageTitle = useAppStore((state) => state.setPageTitle);
+  usePageTitleSetter("Advert Details")
+  
   const theme = useTheme();
   const mdMatch = useMediaQuery(theme.breakpoints.up("md"));
   const customMatch = useMediaQuery(theme.breakpoints.between(899, 1122));
   const navigate = useNavigate();
-
-  useEffect(() => {
-    setPageTitle("Advert Details");
-  }, []);
+  
 
   return (
     <Stack spacing={2} rowGap={4} direction={{ md: "row" }}>

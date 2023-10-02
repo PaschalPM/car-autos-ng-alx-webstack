@@ -27,6 +27,7 @@ export const hasFormChanged = <T>(initialObj: T, newObj: T) => {
 
 export const ucfirst = (str: string) =>
   str.slice(0, 1).toUpperCase() + str.slice(1).toLowerCase();
+
 export const snippet = (str: string, numOfChar: number = 50) =>
   str.length >= numOfChar ? str.slice(0, numOfChar) + " ..." : str;
 
@@ -62,9 +63,9 @@ export const contactHrefGenerator = (
   )}&body=${encodeURIComponent(textOrBody)}`;
 };
 
-export function dialNumber(phoneNumber:string) {
-   // Open the phone dialer with the specified number
-  window.location.href = 'tel:' + phoneNumber;
+export function dialNumber(phoneNumber: string) {
+  // Open the phone dialer with the specified number
+  window.location.href = "tel:" + phoneNumber;
 }
 
 export const supportColor = "rgba(199, 184, 45, 0.10)";

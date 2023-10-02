@@ -1,19 +1,14 @@
+import usePageTitleSetter from "../libs/hooks/setPageTitle";
 import Grid from "@mui/material/Grid";
-
 import OverviewCard from "../components/views/dashboard/Overview";
 import RecentActivitiesCard from "../components/views/dashboard/RecentActivities";
 import MyProfileCard from "../components/views/dashboard/MyProfile";
 import useAppStore from "../store/app";
-import { useEffect } from "react";
+
 
 export default function Dashboard() {
+  usePageTitleSetter("Dashboard")
   const { isManager } = useAppStore((state) => state.userProfile);
-  const setPageTitle = useAppStore((state) => state.setPageTitle);
-
-  useEffect(() => {
-    setPageTitle("Dashboard");
-    // eslint-disable-next-line
-  }, []);
 
   return (
     <Grid container spacing={4}>

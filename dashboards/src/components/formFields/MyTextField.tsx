@@ -4,34 +4,34 @@ import { Field, FieldProps } from "formik";
 function MyTextField<T>({
   name,
   label,
-  initialValue,
+  initialValues,
   sx,
   type,
   required,
   disabled,
   value,
   fullWidth,
-  size
+  size,
 }: {
   name: string;
   label: string;
-  initialValue: T;
+  initialValues: T;
   type?: string;
   disabled?: boolean;
   required?: boolean;
   value?: string;
   fullWidth?: boolean;
   sx?: SxProps<Theme> | undefined;
-  size?: "small" | "medium"
+  size?: "small" | "medium";
 }) {
   return (
     <Field name={name}>
-      {({ field, meta }: FieldProps<typeof initialValue>) => {
+      {({ field, meta }: FieldProps<typeof initialValues>) => {
         return (
           <TextField
             {...field}
             variant="outlined"
-            size={size? size : "small"}
+            size={size ? size : "small"}
             label={label}
             placeholder={label}
             value={value ?? meta.value}
