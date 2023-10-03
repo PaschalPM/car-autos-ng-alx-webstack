@@ -12,7 +12,7 @@ const stateCreator: StateCreator<StateCreatorValueType> = (set) => ({
   setDialogs: (dialog) =>
     set((state) => ({
       ...state,
-      dialogs: [...state.dialogs, dialog],
+      dialogs: [...state.dialogs, {open: true, ...dialog}],
     })),
 
   popDialog: (idx) =>

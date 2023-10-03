@@ -1,33 +1,15 @@
 import { create, StateCreator } from "zustand";
 
 type StateCreatorValueTypes = {
-  acceptedImages: ImageWithPreview[];
-  securedURLWithImageID: string[];
-  addSecuredURLWithImageID: (securedURLWithImageID: string) => void;
-  deleteSecuredURLWithImageID: (imageID: string) => void;
-  setAcceptedImages: (imageList: ImageWithPreview[]) => void;
-  rejectImage: (image: ImageWithPreview) => void;
+  acceptedImages: ImageGrandObject[];
+  setAcceptedImages: (imageList: ImageGrandObject[]) => void;
+  rejectImage: (image: ImageGrandObject) => void;
+  updateImageSecureURL: (image: ImageGrandObject, securedURL:string) => void;
   resetAccepedImages: () => void;
 };
 
 const stateCreator: StateCreator<StateCreatorValueTypes> = (set) => ({
   acceptedImages: [],
-  securedURLWithImageID: [],
-  addSecuredURLWithImageID: (securedURLWithImageID) =>
-    set((state) => ({
-      ...state,
-      securedURLWithImageID: [
-        ...state.securedURLWithImageID,
-        securedURLWithImageID,
-      ],
-    })),
-  deleteSecuredURLWithImageID: (imageID) =>
-    set((state) => ({
-      ...state,
-      securedURLWithImageID: state.securedURLWithImageID.filter(
-        (swID) => !swID.startsWith(imageID)
-      ),
-    })),
   setAcceptedImages: (imageList) =>
     set((state) => ({
       ...state,
@@ -36,11 +18,16 @@ const stateCreator: StateCreator<StateCreatorValueTypes> = (set) => ({
   rejectImage: (image) =>
     set((state) => ({
       ...state,
-      acceptedImages: state.acceptedImages.filter(
-        (img) =>
-          img.file.name + img.file.size !== image.file.name + image.file.size
-      ),
+      acceptedImages: state.acceptedImages.filter((img) => img !== image),
     })),
+    updateImageSecureURL: (image, securedURL) => set((state) => {
+      const selectedImage = state.acceptedImages.find((img) => img === image)
+      selectedImage!.securedURL = securedURL
+      return {
+        ...state,
+        acceptedImages: [...state.acceptedImages]
+      }
+    }),
   resetAccepedImages: () =>
     set((state) => ({
       ...state,

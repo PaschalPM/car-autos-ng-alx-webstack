@@ -19,14 +19,13 @@ export default function Dropzone({ label }: DropzoneProps) {
 
   const onDrop = useCallback(
     (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
-      const imageList: ImageWithPreview[] = acceptedFiles.map((file) => ({
+      const imageList: ImageGrandObject[] = acceptedFiles.map((file) => ({
         file,
-        preview: URL.createObjectURL(file),
+        securedURL: "",
       }));
 
       rejectedFiles.forEach((rejectedFile) => {
         setDialogs({
-          open: true,
           title: `${rejectedFile.errors[0].message}`,
           description: `${rejectedFile.file.name}`,
           handleClose: (idx) => {
@@ -45,20 +44,43 @@ export default function Dropzone({ label }: DropzoneProps) {
       "image/*": [],
     },
     maxFiles: 10,
-    maxSize: 5 * 1024 * 1024
+    maxSize: 5 * 1024 * 1024,
   });
+
+  const Counter = ({ minLen, maxLen }: { minLen: number; maxLen: number }) => {
+    const acceptedImagesLen = acceptedImages.length;
+
+    if (acceptedImagesLen < minLen) {
+      return (
+        <Typography color="error" variant="caption">
+          Add at least {minLen} photos ({acceptedImagesLen} added)
+        </Typography>
+      );
+    } else if (acceptedImagesLen > maxLen){
+      return (
+        <Typography color="error" variant="caption" mt={1}>
+          Add at most {maxLen} photos ({acceptedImagesLen} added)
+        </Typography>
+      );
+    }
+    return (
+      <Typography color="primary" variant="caption" mt={1}>
+        {acceptedImagesLen} photos added...
+      </Typography>
+    );
+  };
 
   return (
     <Box my={2}>
       <Typography variant="subtitle1" gutterBottom>
         {label}
       </Typography>
-
       <Stack
         display={"grid"}
         gridTemplateColumns={"repeat(auto-fill, 95px)"}
         justifyContent={"space-between"}
         gap={2}
+        mb={0.5}
       >
         <AddTile dropzoneProps={{ getRootProps, getInputProps }} />
         {[...acceptedImages].map((img, idx) => (
@@ -66,22 +88,10 @@ export default function Dropzone({ label }: DropzoneProps) {
             key={idx}
             imgObj={img}
             handleDelete={(img) => rejectImage(img)}
-            handleErrorOnUpload={(reason, img) =>{
-              setDialogs({
-                title: img.file.name,
-                description: reason,
-                open: true,
-                handleClose: (idx) => {
-                  rejectImage(img)
-                  popDialog(idx);
-                },
-              })
-            }
-            }
           />
         ))}
       </Stack>
-      validations go here
+      <Counter minLen={5} maxLen={10} />
     </Box>
   );
 }

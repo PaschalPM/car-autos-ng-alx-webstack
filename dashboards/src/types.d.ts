@@ -32,9 +32,9 @@ type CarAdvert = {
   thumbnail: string;
 };
 
-type ImageWithPreview = {
+type ImageGrandObject = {
   file: File;
-  preview: string;
+  securedURL: string
 };
 
 type CloudinaryResponse = {
@@ -44,7 +44,7 @@ type CloudinaryResponse = {
 };
 
 type DialogType = {
-  open: boolean;
+  open?: boolean;
   title: string;
   description: string;
   imgSrc?: string;

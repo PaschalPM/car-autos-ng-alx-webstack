@@ -1,12 +1,10 @@
 import { cloudinaryURL } from "./@config";
+import axios, { isAxiosError } from "axios";
 const apiKey = import.meta.env.VITE_CLOUD_API_KEY;
-const abortController = new AbortController()
-const abortSignal = abortController.signal
-const timeoutDuration = 10000
-
+const timeout = 300000;
 
 export const postToCloud = async (
-  imgObj: ImageWithPreview,
+  imgObj: ImageGrandObject,
   handleSuccess: (data: CloudinaryResponse) => void,
   handleError: (reason: string) => void
 ) => {
@@ -16,23 +14,26 @@ export const postToCloud = async (
   formData.append("api_key", apiKey);
   formData.append("public_id", `${imgObj.file.name}.${imgObj.file.size}`);
 
-  const res = await fetch(cloudinaryURL, {
-    method: "POST",
-    body: formData,
-    signal: abortSignal
-  });
-
   try {
-    if (!res.ok) throw new Error("Network Error");
-    const data = (await res.json()) as CloudinaryResponse;
-    if (data.existing) throw new Error(`${imgObj.file.name} already exists`);
+    const res = await axios<CloudinaryResponse>({
+      method: "POST",
+      url: cloudinaryURL,
+      data: formData,
+      timeout,
+    });
+
+    const data = res.data;
+    if (data.existing) throw new Error(`${imgObj.file.name} already exists!`);
     handleSuccess(data);
   } catch (e) {
-    console.log(e)
-    handleError(String(e));
+    if (isAxiosError(e)) {
+      if (e.code === "ECONNABORTED") {
+        handleError(`${imgObj.file.name} took too long to upload!`);
+      } else {
+        handleError(e.message);
+      }
+    } else {
+      handleError(String(e));
+    }
   }
-
-  setTimeout(()=>{
-    abortController.abort()
-  }, timeoutDuration)
 };

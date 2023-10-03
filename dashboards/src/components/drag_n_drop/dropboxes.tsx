@@ -4,8 +4,7 @@ import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import CircularProgress from "@mui/material/CircularProgress";
-import { useEffect, useState } from "react";
-import { BsExclamationCircleFill } from "react-icons/bs";
+import { useEffect, useState, useRef } from "react";
 import { postToCloud } from "../../libs/requests/cloudinary";
 import useDialogStore from "../../store/dialog";
 import useCloudImagesStore from "../../store/cloudImages";
@@ -42,82 +41,80 @@ export const AddTile = ({
   );
 };
 
+//
+// Preview And Uploader Tile HERE!!!!
+//
 type PreviewAndUploaderTileProps = {
-  imgObj: ImageWithPreview;
-  handleDelete?: (imgObj: ImageWithPreview) => void;
-  handleErrorOnUpload?: (reason: string, imgObj: ImageWithPreview) => void;
+  imgObj: ImageGrandObject;
+  handleDelete?: (imgObj: ImageGrandObject) => void;
 };
 
 export const PreviewAndUploaderTile = ({
   imgObj,
   handleDelete,
-  handleErrorOnUpload,
 }: PreviewAndUploaderTileProps) => {
   const { setDialogs, popDialog } = useDialogStore((state) => state);
-  const { rejectImage, addSecuredURLWithImageID, deleteSecuredURLWithImageID } =
-    useCloudImagesStore((state) => state);
-
+  const { rejectImage, updateImageSecureURL } = useCloudImagesStore(
+    (state) => state
+  );
+  const imageRef = useRef<HTMLImageElement>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState("");
 
-  const imageId = imgObj.file.name + "." + imgObj.file.size;
   const handleSuccess = (data: CloudinaryResponse) => {
-    addSecuredURLWithImageID(imageId + "%%" + data.secure_url);
+    updateImageSecureURL(imgObj, data.secure_url);
     setIsUploading(false);
   };
   const handleError = (reason: string) => {
-    setError(reason);
-    setIsUploading(false);
-
     setDialogs({
       title: imgObj.file.name,
       description: reason,
-      open: true,
-      imgSrc: imgObj.preview,
+      imgSrc: URL.createObjectURL(imgObj.file),
       handleClose: (idx) => {
-        rejectImage(imgObj);
         popDialog(idx);
-        URL.revokeObjectURL(imgObj.preview);
       },
     });
+    setIsUploading(false);
+    setError(reason);
+    rejectImage(imgObj);
   };
+
+  imageRef.current?.addEventListener("load", (ev) => {
+    URL.revokeObjectURL((ev.target as HTMLImageElement).src as string);
+  });
 
   useEffect(() => {
     setIsUploading(true);
     postToCloud(imgObj, handleSuccess, handleError);
     return () => {
       setError("");
-      URL.revokeObjectURL(imgObj.preview);
-      deleteSecuredURLWithImageID(imageId);
+      rejectImage(imgObj);
     };
   }, []);
   return (
     <>
-      <Box sx={{ ...dropboxStyle(), position: "relative" }}>
-        <img
-          style={{ objectFit: "cover" }}
-          src={imgObj.preview}
-          width={"100%"}
-          height={"100%"}
-        />
-        <Box sx={{ position: "absolute" }}>
-          {isUploading ? (
-            <CircularProgress />
-          ) : error ? (
-            <IconButton
-              onClick={() => {
-                handleErrorOnUpload && handleErrorOnUpload(error, imgObj);
-              }}
-            >
-              <BsExclamationCircleFill size={36} color={"red"} />
-            </IconButton>
-          ) : (
-            <IconButton onClick={() => handleDelete && handleDelete(imgObj)}>
-              <CloseIcon fontSize="medium" />
-            </IconButton>
-          )}
+      {error ? (
+        ""
+      ) : (
+        <Box sx={{ ...dropboxStyle(), position: "relative" }}>
+          <img
+            ref={imageRef}
+            style={{ objectFit: "cover" }}
+            src={URL.createObjectURL(imgObj.file)}
+            width={"100%"}
+            height={"100%"}
+          />
+          <Box sx={{ position: "absolute" }}>
+            {isUploading ? (
+              <CircularProgress />
+            ) : (
+              <IconButton onClick={() => handleDelete && handleDelete(imgObj)}>
+                <CloseIcon fontSize="medium" />
+              </IconButton>
+            )}
+          </Box>
         </Box>
-      </Box>
+      )}
     </>
   );
 };
