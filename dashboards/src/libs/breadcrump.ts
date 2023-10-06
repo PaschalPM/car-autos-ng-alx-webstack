@@ -4,7 +4,9 @@ type BreadCrumbMap = {
 };
 
 const transformPath4Breadcrumbs = (subPath: string) =>{
-  if (subPath.length >= 36) return 'Details'
+  const pathname = location.pathname
+  if (subPath.length >= 36 && pathname.match(/my-adverts/)) return 'Details'
+  if (subPath.length >= 36 && pathname.match(/my-marketers/)) return 'Profile'
   return subPath.replace(/(^.|-.)/g, (m) => {
     if (m.startsWith("-")) return " " + m[1].toUpperCase();
     return m.toUpperCase();

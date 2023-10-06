@@ -3,12 +3,12 @@ import Grid from "@mui/material/Grid";
 import OverviewCard from "../components/views/dashboard/Overview";
 import RecentActivitiesCard from "../components/views/dashboard/RecentActivities";
 import MyProfileCard from "../components/views/dashboard/MyProfile";
-import useAppStore from "../store/app";
+import useAuthUserProfile from "../store/auth-user";
 
 
 export default function Dashboard() {
   usePageTitleSetter("Dashboard")
-  const { isManager } = useAppStore((state) => state.userProfile);
+  const { isManager } = useAuthUserProfile((state) => state.userProfile);
 
   return (
     <Grid container spacing={4}>

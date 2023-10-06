@@ -7,14 +7,16 @@ import Layout from "./@layout";
 import Dashboard from "./dashboard";
 import Marketers from "./marketers";
 import Adverts from "./adverts";
-import MyProfile from "./myProfile";
+import MyProfile from "./my-profile";
 import Login from "./login";
 import BeforeEnter from "../components/views/BeforeEnter";
 import NotFoundPage from "../components/views/NotFoundPage";
-import EditProfile from "./myProfile/edit";
+import EditMyProfile from "./my-profile/edit";
 import AddAdvert from "./adverts/new";
 import CarAdvertDetails from "./adverts/details";
 import ImageFullScreenSlider from "../components/ImageFullScreenSlider";
+import MarketerProfile from "./marketer-profile";
+import EditMarketerProfile from "./marketer-profile/edit";
 import { Link } from "react-router-dom";
 
 const router = createBrowserRouter(
@@ -46,11 +48,13 @@ const router = createBrowserRouter(
         <Route index element={<Dashboard />} />
         <Route path="my-marketers" element={<Marketers />} />
         <Route path="my-marketers/new" element={<>New Marketer</>} />
+        <Route path="my-marketers/:username" element={<MarketerProfile />} />
+        <Route path="my-marketers/:username/edit" element={<EditMarketerProfile />} />
         <Route path="my-adverts" element={<Adverts />} />
-        <Route path="my-adverts/:id" element={<CarAdvertDetails />} />
         <Route path="my-adverts/new" element={<AddAdvert />} />
+        <Route path="my-adverts/:id" element={<CarAdvertDetails />} />
         <Route path="my-profile" element={<MyProfile />} />
-        <Route path="my-profile/edit" element={<EditProfile />} />
+        <Route path="my-profile/edit" element={<EditMyProfile />} />
       </Route>
       <Route path="*" element={<NotFoundPage />} />
     </Route>

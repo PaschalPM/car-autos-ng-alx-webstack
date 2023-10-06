@@ -1,11 +1,11 @@
-import { SxProps, Theme, Button, CircularProgress } from "@mui/material";
+import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
 import { FormikProps } from "formik";
 
 export default function MyButtonWithSpinner<T>({
   text,
   suspenseText,
   formik,
-  sx,
   size,
   startIcon,
   endIcon,
@@ -14,7 +14,6 @@ export default function MyButtonWithSpinner<T>({
 }: {
   text: string;
   formik: FormikProps<T>;
-  sx?: SxProps<Theme> | undefined;
   suspenseText: string;
   startIcon?: React.ReactNode;
   endIcon?: React.ReactNode;

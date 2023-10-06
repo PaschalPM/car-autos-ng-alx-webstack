@@ -1,13 +1,7 @@
 import { faker } from "@faker-js/faker";
-import dayjs from "dayjs"
-import relativeTime from 'dayjs/plugin/relativeTime'
-import { ucfirst } from "../utils";
+import { ucfirst, humanReadableRelativeTime } from "../utils";
 
-dayjs.extend(relativeTime);
 
-const humanReadableRelativeTime = (dateString:string) => {
-    return dayjs(dateString).fromNow()
-}
 export type RecentActivity = {
   id: string;
   activityType: string;

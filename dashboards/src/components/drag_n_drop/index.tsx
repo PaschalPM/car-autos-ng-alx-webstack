@@ -22,6 +22,7 @@ export default function Dropzone({ label }: DropzoneProps) {
       const imageList: ImageGrandObject[] = acceptedFiles.map((file) => ({
         file,
         securedURL: "",
+        isSubmitted: false
       }));
 
       rejectedFiles.forEach((rejectedFile) => {
@@ -35,6 +36,7 @@ export default function Dropzone({ label }: DropzoneProps) {
       });
       setAcceptedImages(imageList);
     },
+    // eslint-disable-next-line
     []
   );
 
@@ -87,7 +89,7 @@ export default function Dropzone({ label }: DropzoneProps) {
           <PreviewAndUploaderTile
             key={idx}
             imgObj={img}
-            handleDelete={(img) => rejectImage(img)}
+            handleDelete={(imgObj) => rejectImage(imgObj)}
           />
         ))}
       </Stack>

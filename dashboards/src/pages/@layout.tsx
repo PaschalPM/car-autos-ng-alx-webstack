@@ -23,9 +23,9 @@ import { Outlet } from "react-router-dom";
 import MyListItem from "../components/MyListItem";
 import useAppStore from "../store/app";
 import { ucfirst } from "../libs/utils";
-import { useNavigate } from "react-router-dom";
-import MySnackbar from "../components/prompts/MySnackbar";
 import MyAlert from "../components/prompts/MyAlert";
+import useAuthUserProfile from "../store/auth-user";
+import useLogout from "../libs/hooks/logout";
 
 const drawerWidth = 240;
 
@@ -99,34 +99,14 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function Layout() {
-  const { username, isManager } = useAppStore((state) => state.userProfile);
-  const logout = useAppStore((state) => state.logout);
-  const openSnackbar = useAppStore((state) => state.openSnackbar);
-  const resetSnackbar = useAppStore((state) => state.resetSnackbar);
-  const openAlert = useAppStore((state) => state.openAlert);
+  const { username, isManager } = useAuthUserProfile((state) => state.userProfile);
+  const handleLogout = useLogout()
   const pageTitle = useAppStore((state) => state.pageTitle);
-  const navigate = useNavigate();
+ 
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
-  const handleLogout = () => {
-    openSnackbar(
-      "Logging out.",
-      () => {
-        resetSnackbar();
-      },
-      () => {
-        openAlert(
-          "Logged out.",
-          () => {
-            navigate("/");
-            logout();
-          },
-          "success"
-        );
-      }
-    );
-  };
+ 
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -231,7 +211,6 @@ export default function Layout() {
           </Box>
         </Box>
       </Box>
-      <MySnackbar />
       <MyAlert />
     </>
   );

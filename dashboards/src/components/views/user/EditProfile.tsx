@@ -2,26 +2,29 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import CircularProgress from "@mui/material/CircularProgress";
-import MyAlert from "../../components/prompts/MyAlert";
+import MyAlert from "../../prompts/MyAlert";
 import Save from "@mui/icons-material/Save";
-import MyTextField from "../../components/formFields/MyTextField";
+import MyTextField from "../../formFields/MyTextField";
 import { useState } from "react";
-import { hasFormChanged } from "../../libs/utils";
-import useAppStore from "../../store/app";
-import UpdatePasswordModal from "../../components/views/UpdatePasswordModal";
-import { userDetailValidationSchema, fields } from "../../libs/snippets/myDetails";
+import { hasFormChanged } from "../../../libs/utils";
+import useAppStore from "../../../store/app";
+import UpdatePasswordModal from "../UpdatePasswordModal";
+import {
+  userDetailValidationSchema,
+  fields,
+} from "../../../libs/snippets/myDetails";
 import { Formik, FormikConfig, FormikProps, Form } from "formik";
-import SubHeader from "../../components/typography/SubHeader";
-import MySnackbar from "../../components/prompts/MySnackbar";
-import { useEffect } from "react";
+import SubHeader from "../../typography/SubHeader";
+import MySnackbar from "../../prompts/MySnackbar";
 
-export default function EditProfile() {
-  const userProfile = useAppStore((state) => state.userProfile);
+type Props = {
+  userProfile: UserValues;
+};
+export default function EditProfile({ userProfile }: Props) {
   const openSnackbar = useAppStore((state) => state.openSnackbar);
   const resetSnackbar = useAppStore((state) => state.resetSnackbar);
   const openAlert = useAppStore((state) => state.openAlert);
   const resetAlert = useAppStore((state) => state.resetAlert);
-  const setPageTitle = useAppStore((state) => state.setPageTitle);
 
   const [isPasswordModalOpen, setisPasswordModalOpen] = useState(false);
   const formikConfig: FormikConfig<UserValues> = {
@@ -48,10 +51,20 @@ export default function EditProfile() {
     },
   };
 
-  useEffect(() => {
-    setPageTitle("My Profile");
-    // eslint-disable-next-line
-  }, []);
+  const extractFormKeyValues = (
+    userProfile: UserValues
+  ): Pick<
+    UserValues,
+    "firstname" | "lastname" | "username" | "email" | "phoneNumber"
+  > => {
+    return {
+      firstname: userProfile.firstname,
+      lastname: userProfile.lastname,
+      username: userProfile.username,
+      email: userProfile.email,
+      phoneNumber: userProfile.phoneNumber,
+    };
+  };
   return (
     <>
       <SubHeader sx={{ mb: 1 }}> Update Profile </SubHeader>
@@ -66,12 +79,12 @@ export default function EditProfile() {
                 rowGap: 2,
                 px: 1,
                 p: 2,
-                pt: 3
+                pt: 3,
               }}
             >
               {fields.map(({ name, label, type }) => (
                 <MyTextField
-                  initialValue={formik.values}
+                  initialValues={formik.values}
                   key={name}
                   name={name}
                   label={label}
@@ -86,7 +99,7 @@ export default function EditProfile() {
               ))}
               <MyTextField
                 label="Group"
-                initialValue={formik.values}
+                initialValues={formik.values}
                 name="group"
                 value={userProfile.isManager ? "Manager" : "Marketer"}
                 sx={{
@@ -102,10 +115,10 @@ export default function EditProfile() {
                   color="inherit"
                   size="large"
                   disabled={
-                    !hasFormChanged(userProfile, {
-                      ...formik.values,
-                      isManager: userProfile.isManager,
-                    }) ||
+                    !hasFormChanged(
+                      extractFormKeyValues(userProfile),
+                      formik.values
+                    ) ||
                     !formik.isValid ||
                     formik.isSubmitting
                   }
@@ -116,10 +129,7 @@ export default function EditProfile() {
                     <>Save changes</>
                   ) : (
                     <>
-                      <span style={{ marginRight: "8px" }}>
-
-                        Saving changes
-                      </span>
+                      <span style={{ marginRight: "8px" }}>Saving changes</span>
                       <CircularProgress size={15} />
                     </>
                   )}
