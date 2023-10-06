@@ -1,10 +1,10 @@
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import Paper from "@mui/material/Paper";
+import Divider from "@mui/material/Divider";
 import Edit from "@mui/icons-material/Edit";
 import Add from "@mui/icons-material/Add";
 import Logout from "@mui/icons-material/Logout";
@@ -13,20 +13,13 @@ import { AiOutlineMail } from "react-icons/ai";
 import { GiVibratingSmartphone } from "react-icons/gi";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { TiGroupOutline } from "react-icons/ti";
-import { Link, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-
-import SubHeader from "../../components/typography/SubHeader";
-
-import useAppStore from "../../store/app";
-import { urlPath } from "../../libs/utils";
+import SubHeader from "../../typography/SubHeader";
+import { Link } from "react-router-dom";
+import { humanReadableRelativeTime, urlPath } from "../../../libs/utils";
+import useLogout from "../../../libs/hooks/logout";
 
 const Item = ({ Icon, text }: { Icon: React.ReactNode; text: string }) => (
-  <Box
-    display="flex"
-    alignItems={"center"}
-    gap={1}
-  >
+  <Box display="flex" alignItems={"center"} gap={1}>
     <Box>{Icon}</Box>
     <Typography variant={"body1"} gutterBottom>
       {text}
@@ -36,6 +29,7 @@ const Item = ({ Icon, text }: { Icon: React.ReactNode; text: string }) => (
 
 type MyLinkButtonProps = React.PropsWithChildren & {
   to: string;
+  state?: object;
   variant: "outlined" | "contained";
   startIcon: React.ReactNode;
   color: "success" | "error" | "secondary" | "primary" | "info";
@@ -47,10 +41,12 @@ const MyLinkButton = ({
   color,
   variant,
   startIcon,
+  state,
   handleClick,
 }: MyLinkButtonProps) => (
   <Link
     to={to}
+    state={state}
     onClick={(ev) => {
       handleClick && handleClick(ev);
     }}
@@ -66,42 +62,14 @@ const MyLinkButton = ({
     </Button>
   </Link>
 );
-export default function MyProfile() {
-  const userProfile = useAppStore((state) => state.userProfile);
-  const logout = useAppStore((state) => state.logout);
-  const openSnackbar = useAppStore((state) => state.openSnackbar);
-  const resetSnackbar = useAppStore((state) => state.resetSnackbar);
-  const openAlert = useAppStore((state) => state.openAlert);
-  const setPageTitle = useAppStore((state) => state.setPageTitle);
 
-  const navigate = useNavigate();
+type Props = {
+  userProfile: UserValues;
+  isAuth: boolean;
+};
 
-  useEffect(() => {
-    setPageTitle("My Profile");
-    // eslint-disable-next-line
-  }, []);
-
-  const handleLogout: React.MouseEventHandler<HTMLAnchorElement> | undefined = (
-    ev
-  ) => {
-    ev.preventDefault();
-    openSnackbar(
-      "Logging out.",
-      () => {
-        resetSnackbar();
-      },
-      () => {
-        openAlert(
-          "Logged out.",
-          () => {
-            navigate("/");
-            logout();
-          },
-          "success"
-        );
-      }
-    );
-  };
+export default function UserProfile({ userProfile, isAuth }: Props) {
+  const handleLogout = useLogout();
   return (
     <Container disableGutters>
       <Stack
@@ -126,11 +94,13 @@ export default function MyProfile() {
               <Item Icon={<RiLockPasswordLine />} text={"**********"} />
               <Item
                 Icon={<TiGroupOutline />}
-                text={userProfile.isManager ? "manager" : "marketer"}
+                text={userProfile.isManager ? "Manager" : "Marketer"}
               />
               <Divider sx={{ marginBottom: "1em" }} />
               <Typography gutterBottom>
-                Date of Registration: 2 weeks ago
+                Date of Registration:
+                {" " +
+                  humanReadableRelativeTime(userProfile.createdAt as string)}
               </Typography>
             </Container>
           </Paper>
@@ -147,6 +117,7 @@ export default function MyProfile() {
             to="edit"
             variant="outlined"
             color="info"
+            state={{ userProfile }}
             startIcon={<Edit />}
           >
             Edit Profile
@@ -168,15 +139,17 @@ export default function MyProfile() {
           >
             Add Advert
           </MyLinkButton>
-          <MyLinkButton
-            to={"/"}
-            variant="contained"
-            color="error"
-            startIcon={<Logout />}
-            handleClick={handleLogout}
-          >
-            Logout
-          </MyLinkButton>
+          {isAuth && (
+            <MyLinkButton
+              to={"/"}
+              variant="contained"
+              color="error"
+              startIcon={<Logout />}
+              handleClick={handleLogout}
+            >
+              Logout
+            </MyLinkButton>
+          )}
         </Box>
       </Stack>
     </Container>

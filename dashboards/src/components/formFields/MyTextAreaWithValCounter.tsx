@@ -1,10 +1,6 @@
 import { SxProps, Theme, TextField, Typography, Box } from "@mui/material";
 import { Field, FieldProps, FieldInputProps, FormikProps } from "formik";
 
-// type HangleChange =
-//   | React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
-//   | undefined;
-
 function rangeDisplay<T>(value: T, maxValLen: number) {
   return typeof value === "string" && `${value.length}/${maxValLen}`;
 }
@@ -23,6 +19,7 @@ function MyTextFieldWithValCounter<T>({
   value,
   fullWidth,
   size,
+  multiline
 }: {
   name: string;
   label: string;
@@ -33,6 +30,7 @@ function MyTextFieldWithValCounter<T>({
   required?: boolean;
   value?: string;
   fullWidth?: boolean;
+  multiline?: boolean;
   sx?: SxProps<Theme> | undefined;
   size?: "small" | "medium";
 }) {
@@ -67,10 +65,15 @@ function MyTextFieldWithValCounter<T>({
               error={!!meta.error && meta.touched}
               helperText={!!meta.error && meta.touched && meta.error}
               onChange={(ev) => handleChange(ev, field, form, maxValLen)}
+              multiline={multiline}
+              rows={multiline ? 4 : 1}
             />
-            <Typography variant={'caption'} sx={{position:'absolute', top:45, right: 1}}>
+            <Typography
+              variant={"caption"}
+              sx={{ position: "absolute", bottom: !!meta.error && meta.touched ? 0 : -24, right: 1 }}
+            >
               {rangeDisplay(meta.value, maxValLen)}
-              </Typography>
+            </Typography>
           </Box>
         );
       }}

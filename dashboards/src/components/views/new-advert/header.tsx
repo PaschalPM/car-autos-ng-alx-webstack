@@ -23,7 +23,7 @@ const ResetButton = () => {
 
 const PostAdvertTitle = () => (
   <Typography variant="h6" textAlign={"center"} py={1}>
-    Post Advert
+    Post Ad
   </Typography>
 );
 

@@ -1,5 +1,12 @@
 import _ from "lodash";
+import dayjs from "dayjs"
+import relativeTime from 'dayjs/plugin/relativeTime'
 
+dayjs.extend(relativeTime);
+
+export const humanReadableRelativeTime = (dateString: string) => {
+  return dayjs(dateString).fromNow()
+}
 export const urlPath = (uniqueText: string) => {
   const basePath = "/dashboard/";
   uniqueText = uniqueText.replace(/\s/g, "-").toLowerCase();

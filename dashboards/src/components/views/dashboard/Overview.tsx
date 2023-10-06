@@ -11,7 +11,7 @@ import { RiAdvertisementFill } from "react-icons/ri";
 import { Link as ReactLink } from "react-router-dom";
 import { urlPath } from "../../../libs/utils";
 import SubHeader from "../../typography/SubHeader";
-import useAppStore from "../../../store/app";
+import useAuthUserProfile from "../../../store/auth-user";
 
 type OverviewType = {
   label: string;
@@ -48,7 +48,7 @@ const overviewElementsGenerator = (
 };
 
 export default function Overview() {
-  const { isManager } = useAppStore((state) => state.userProfile);
+  const { isManager } = useAuthUserProfile((state) => state.userProfile);
   return (
     <Card sx={{ marginBottom: 2, width: "100%" }}>
       <CardContent

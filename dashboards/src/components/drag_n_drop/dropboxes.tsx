@@ -54,9 +54,8 @@ export const PreviewAndUploaderTile = ({
   handleDelete,
 }: PreviewAndUploaderTileProps) => {
   const { setDialogs, popDialog } = useDialogStore((state) => state);
-  const { rejectImage, updateImageSecureURL } = useCloudImagesStore(
-    (state) => state
-  );
+  const { rejectImage, updateImageSecureURL, imageIsSubmitted } =
+    useCloudImagesStore((state) => state);
   const imageRef = useRef<HTMLImageElement>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState("");
@@ -64,6 +63,7 @@ export const PreviewAndUploaderTile = ({
   const handleSuccess = (data: CloudinaryResponse) => {
     updateImageSecureURL(imgObj, data.secure_url);
     setIsUploading(false);
+    imageIsSubmitted(imgObj);
   };
   const handleError = (reason: string) => {
     setDialogs({
@@ -88,8 +88,9 @@ export const PreviewAndUploaderTile = ({
     postToCloud(imgObj, handleSuccess, handleError);
     return () => {
       setError("");
-      rejectImage(imgObj);
+      // rejectImage(imgIndex);
     };
+    // eslint-disable-next-line
   }, []);
   return (
     <>

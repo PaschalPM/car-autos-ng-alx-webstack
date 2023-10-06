@@ -12,8 +12,8 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import { TiGroupOutline } from "react-icons/ti";
 import { GiVibratingSmartphone } from "react-icons/gi";
 import { Link } from "react-router-dom";
-import useAppStore from "../../../store/app";
 import SubHeader from "../../typography/SubHeader";
+import useAuthUserProfile from "../../../store/auth-user";
 
 const Item = ({ Icon, text }: { Icon: React.ReactNode; text: string }) => (
   <Box
@@ -28,7 +28,7 @@ const Item = ({ Icon, text }: { Icon: React.ReactNode; text: string }) => (
   </Box>
 );
 export default function MyProfile() {
-  const state = useAppStore((state) => state.userProfile);
+  const state = useAuthUserProfile((state) => state.userProfile);
   return (
     <Card sx={{ width:"100%" }}>
       <CardContent>

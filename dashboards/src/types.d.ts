@@ -1,3 +1,16 @@
+type ServerUser = {
+  id: string;
+  firstname: string;
+  lastname: string;
+  username: string;
+  email: string;
+  phone_number: string;
+  is_manager: boolean;
+  referral_code: string | null;
+  created_at: string;
+  team_manager: string | null;
+}
+
 type UserValues = {
   id?: string;
   firstname: string;
@@ -7,6 +20,9 @@ type UserValues = {
   phoneNumber: string;
   password?: string;
   isManager?: boolean;
+  referralCode?: string | null;
+  createdAt?: string;
+  teamManager?: string | null;
 };
 
 type Prompt = {
@@ -34,7 +50,8 @@ type CarAdvert = {
 
 type ImageGrandObject = {
   file: File;
-  securedURL: string
+  securedURL: string;
+  isSubmitted?: boolean;
 };
 
 type CloudinaryResponse = {
@@ -51,3 +68,31 @@ type DialogType = {
   textCenter?: boolean;
   handleClose?: (idx: number) => void;
 };
+
+type OptionType = {
+  value: string;
+  text: string;
+};
+
+type BrandAndStateServerDataType = {
+  id: number;
+  name: string
+}
+
+type ModelServerDataType = {
+  id: number;
+  brand_id: number;
+  name: string
+}
+
+type YearServerDataType = {
+  id: number;
+  year: number
+}
+
+type CityServerDataType = {
+  id: number;
+  state_id: number;
+  name: string
+}
+
