@@ -1,5 +1,7 @@
 """This module defines the module SearchUsers."""
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAdminUser
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.http import JsonResponse
 from car_app.models import User
 from car_app.serializers.user_serializer import GetUserSerializer
@@ -9,6 +11,9 @@ from car_advert.utils import paginate_queryset
 class SearchUsers(APIView):
     """This class defines a post method that searches for users."""
     # pylint: disable=no-member
+
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAdminUser]
 
     def post(self, request):
         """
