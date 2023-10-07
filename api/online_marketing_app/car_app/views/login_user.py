@@ -2,6 +2,7 @@
 from django.http import JsonResponse
 from django.utils import timezone
 from django.contrib.auth import authenticate
+from django.conf import settings
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from user_activity.models import UserActivity
@@ -34,6 +35,7 @@ class UserLogin(APIView):
             return JsonResponse({'error': 'User not found.'}, status=400)
 
         refresh = RefreshToken.for_user(user)
+
         refresh['username'] = user.username
         refresh['is_superuser'] = user.is_superuser
         refresh['is_manager'] = user.is_manager
@@ -41,11 +43,22 @@ class UserLogin(APIView):
         refresh['last_name'] = user.last_name
         refresh['email'] = user.email
         refresh['phone_number'] = user.phone_number
-        refresh['team_manager'] = user.team_manager
+        refresh['team_manager'] = str(user.team_manager)
+        refresh['created_at'] = str(user.created_at)
+        refresh['referral_code'] = user.referral_code
+
         access = str(refresh.access_token)
 
         response = JsonResponse({'access': access}, status=200)
-        response.set_cookie('refresh', str(refresh), httponly=True)
+        refresh_token_lifetime = settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME']
+        max_age_seconds = refresh_token_lifetime.total_seconds()
+        response.set_cookie(
+            key='refresh',
+            value=str(refresh),
+            httponly=True,
+            max_age=max_age_seconds,
+            secure=True,
+        )
 
         user.last_login = timezone.now()
         user.save()
