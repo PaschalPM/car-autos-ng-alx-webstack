@@ -1,7 +1,7 @@
 type ServerUser = {
   id: string;
-  firstname: string;
-  lastname: string;
+  first_name: string;
+  last_name: string;
   username: string;
   email: string;
   phone_number: string;
@@ -81,7 +81,7 @@ type BrandAndStateServerDataType = {
 
 type ModelServerDataType = {
   id: number;
-  brand_id: number;
+  brand: number;
   name: string
 }
 
@@ -92,7 +92,7 @@ type YearServerDataType = {
 
 type CityServerDataType = {
   id: number;
-  state_id: number;
+  state: number;
   name: string
 }
 

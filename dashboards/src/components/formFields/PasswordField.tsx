@@ -9,7 +9,7 @@ import { Field, FieldProps, FieldMetaProps } from "formik";
 function PasswordField<T>({
   name,
   label,
-  initialValue,
+  initialValues,
   sx,
   disabled,
   value,
@@ -19,7 +19,7 @@ function PasswordField<T>({
 }: {
   name: string;
   label: string;
-  initialValue: T;
+  initialValues: T;
   disabled?: boolean;
   value?: string;
   fullWidth?: boolean;
@@ -29,13 +29,13 @@ function PasswordField<T>({
 }) {
   const [showPassword, setShowPassword] = useState(false);
   const adornmentColor: (
-    meta: FieldMetaProps<typeof initialValue>
+    meta: FieldMetaProps<typeof initialValues>
   ) => "action" | "error" = (meta) =>
     `${meta.error && meta.touched ? "error" : "action"}`;
 
   return (
     <Field name={name}>
-      {({ field, meta }: FieldProps<typeof initialValue>) => {
+      {({ field, meta }: FieldProps<typeof initialValues>) => {
         return (
           <TextField
             {...field}

@@ -5,11 +5,12 @@ import DashboardFeedback from "../DashboardFeedback";
 
 export default function ViewProvider({ children }: React.PropsWithChildren) {
   const queries = useFieldOptions();
-  const brandsQuery = queries[0];
-  const modelsQuery = queries[1];
-  const yearsQuery = queries[2];
-  const statesQuery = queries[3];
-  const citiesQuery = queries[4];
+  const marketersQuery = queries[0];
+  const brandsQuery = queries[1];
+  const modelsQuery = queries[2];
+  const yearsQuery = queries[3];
+  const statesQuery = queries[4];
+  const citiesQuery = queries[5];
 
   const isLoading = queries.some((query) => query.isLoading);
   const isError = queries.some((query) => query.isError);
@@ -22,6 +23,7 @@ export default function ViewProvider({ children }: React.PropsWithChildren) {
     >
       <viewContext.Provider
         value={{
+          marketerOptions: marketersQuery.data as OptionType[],
           brandOptions: brandsQuery.data as OptionType[],
           modelOptions: modelsQuery.data as (OptionType & {
             brandId: number;

@@ -110,7 +110,7 @@ export default function UserProfile({ userProfile, isAuth }: Props) {
           display={"flex"}
           sx={{ minHeight: "225px" }}
           flexDirection={"column"}
-          justifyContent={"space-around"}
+          justifyContent={"space-evenly"}
           flexBasis={"250px"}
         >
           <MyLinkButton
@@ -122,23 +122,27 @@ export default function UserProfile({ userProfile, isAuth }: Props) {
           >
             Edit Profile
           </MyLinkButton>
-
-          <MyLinkButton
-            to={urlPath("my-marketers:new")}
-            color="primary"
-            variant="outlined"
-            startIcon={<Add />}
-          >
-            Add Marketer
-          </MyLinkButton>
-          <MyLinkButton
-            to={urlPath("my-adverts:new")}
-            variant="outlined"
-            color="secondary"
-            startIcon={<Add />}
-          >
-            Add Advert
-          </MyLinkButton>
+          {userProfile.isManager && (
+            <>
+              <MyLinkButton
+                to={urlPath("my-marketers:new")}
+                color="primary"
+                variant="outlined"
+                startIcon={<Add />}
+              >
+                Add Marketer
+              </MyLinkButton>
+              <MyLinkButton
+                to={urlPath("my-adverts:new")}
+                state={{ marketerId: userProfile.id }}
+                variant="outlined"
+                color="secondary"
+                startIcon={<Add />}
+              >
+                Add Advert
+              </MyLinkButton>
+            </>
+          )}
           {isAuth && (
             <MyLinkButton
               to={"/"}

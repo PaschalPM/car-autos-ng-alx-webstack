@@ -9,6 +9,9 @@ import PasswordField from "../components/formFields/PasswordField";
 import MyButtonWithSpinner from "../components/MyButtonWithSpinner";
 import MyAlert from "../components/prompts/MyAlert";
 import { useNavigate } from "react-router-dom";
+import useAuthJWTToken from "../store/jwt-token";
+import { useLoginUserMutation } from "../libs/hooks/queries/auth";
+
 
 const FormContainer = styled(Paper)({
   maxWidth: "400px",
@@ -28,10 +31,11 @@ type Values = {
 };
 
 const Login = () => {
-  const setUserJWTToken = useAppStore((state) => state.setUserJWTToken);
   const openAlert = useAppStore((state) => state.openAlert);
   const resetAlert = useAppStore((state) => state.resetAlert);
-  const navigate = useNavigate()
+  const setUserJWTToken = useAuthJWTToken((state) => state.setUserJWTToken);
+  const navigate = useNavigate();
+  const { mutate } = useLoginUserMutation();
 
   const formikConfig: FormikConfig<Values> = {
     initialValues: {
@@ -43,11 +47,29 @@ const Login = () => {
       password: Yup.string().min(8).required(),
     }),
     onSubmit: (values, formikHelpers) => {
-      openAlert("Logged in successfully", ()=>{
-        resetAlert()
-        setUserJWTToken(`${values.username}-${values.password}`)
-        navigate('/dashboard/')
-      }, "success");
+      mutate(values, {
+        onSuccess: (data) => {
+          openAlert(
+            "Logged in successfully",
+            () => {
+              setUserJWTToken(data.data.access);
+              resetAlert();
+              navigate("/dashboard/");
+            },
+            "success"
+          );
+        },
+        onError: (reason) => {
+          openAlert(
+            String(reason),
+            () => {
+              resetAlert();
+              formikHelpers.setSubmitting(false);
+            },
+            "error"
+          );
+        },
+      });
     },
   };
 
@@ -64,7 +86,7 @@ const Login = () => {
                 label="Username"
                 type="text"
                 name="username"
-                initialValue={formik.values}
+                initialValues={formik.values}
                 size="medium"
                 required
               />
@@ -72,7 +94,7 @@ const Login = () => {
                 label="Password"
                 name="password"
                 size="medium"
-                initialValue={formik.values}
+                initialValues={formik.values}
               />
               <MyButtonWithSpinner
                 text="Login"

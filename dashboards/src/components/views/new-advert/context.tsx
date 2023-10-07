@@ -1,6 +1,7 @@
 import { createContext } from "react";
 
 type DataType = {
+  marketerOptions: OptionType[];
   brandOptions: OptionType[];
   modelOptions: (OptionType & { brandId: number })[];
   yearOptions: OptionType[];

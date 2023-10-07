@@ -1,46 +1,72 @@
 import { PropsWithChildren } from "react";
 import useAuthUserProfile from "../../store/auth-user";
 import useAuthJWTToken from "../../store/jwt-token";
+import jwt from "jwt-decode";
+import { useEffect, useState } from "react";
+import BeforeEnterFeedback from "./BeforeEnterFeedback";
+import { useRefreshTokenMutation } from "../../libs/hooks/queries/auth";
 
 export default function BeforeEnter({ children }: PropsWithChildren) {
-  const userjwttoken = useAuthJWTToken((state) => state.userjwttoken)
-  const setUserProfile = useAuthUserProfile((state) => state.setUserProfile)
+  const userjwttoken = useAuthJWTToken((state) => state.userjwttoken);
+  const setUserJWTToken = useAuthJWTToken((state) => state.setUserJWTToken);
+  const setUserProfile = useAuthUserProfile((state) => state.setUserProfile);
+  const [isAuthenticating, setIsAuthenticating] = useState(true);
+  const [isAuth, setIsAuth] = useState(false);
+  const { mutate } = useRefreshTokenMutation();
 
-  const [username, password] = userjwttoken.split("-");
+  useEffect(() => {
+    if (!userjwttoken) {
+      mutate(
+        {},
+        {
+          onSuccess: (data) => {
+            setUserJWTToken((data.data as { access: string }).access);
+            setIsAuthenticating(false);
+            setIsAuth(true);
+          },
+          onError: () => {
+            setIsAuthenticating(false);
+            setIsAuth(false);
+          },
+        }
+      );
+    } else {
+      setIsAuthenticating(false)
+      setIsAuth(true)
+    }
+  }, []);
 
-  // if (password === "12345678") {
-  //   if (username === "pasmac") {
-  //     setUserProfile({
-  //       firstname: "Paschal",
-  //       lastname: "Okafor",
-  //       email: "okaforpaschal018@gmail.com",
-  //       phoneNumber: "07031102089",
-  //       username: "pasmac",
-  //       isManager: true,
-  //     });
-  //   } else {
-  //     setUserProfile({
-  //       firstname: "John",
-  //       lastname: "Doe",
-  //       email: "johndoe@gmail.com",
-  //       phoneNumber: "09034567789",
-  //       username,
-  //       isManager: false,
-  //     });
-  //   }
-  // }
+  useEffect(() => {
+    if (userjwttoken) {
+      const {
+        user_id,
+        first_name,
+        last_name,
+        username,
+        email,
+        created_at,
+        is_manager,
+        phone_number,
+        referral_code,
+      } = jwt(userjwttoken) as ServerUser & { user_id: string };
+      const userProfile = {
+        id: user_id,
+        username,
+        firstname: first_name,
+        lastname: last_name,
+        email,
+        createdAt: created_at,
+        isManager: is_manager,
+        phoneNumber: phone_number,
+        referralCode: referral_code,
+      };
+      setUserProfile(userProfile);
+    }
+  }, [userjwttoken]);
 
-  setUserProfile({
-    id: "pasmac1234",
-    firstname: "Paschal",
-    lastname: "Okafor",
-    email: "okaforpaschal018@gmail.com",
-    phoneNumber: "07031102089",
-    username: "pasmac",
-    isManager: true,
-    createdAt: "2023-10-05 14:30:45.123456"
-  });
-  // if (password === "12345678") return children;
-  return children;
-  // return <UnauthorizedPage />;
+  return (
+    <BeforeEnterFeedback isAuthenticating={isAuthenticating} isAuth={isAuth}>
+      {children}
+    </BeforeEnterFeedback>
+  );
 }
