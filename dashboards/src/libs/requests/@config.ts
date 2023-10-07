@@ -1,5 +1,4 @@
 import axios from "axios";
-import useAuthJWTToken from "../../store/jwt-token";
 
 const cloudName = import.meta.env.VITE_CLOUD_NAME;
 const baseURL = import.meta.env.VITE_BASE_URL;

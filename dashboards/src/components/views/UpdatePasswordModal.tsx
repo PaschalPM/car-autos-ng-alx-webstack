@@ -92,7 +92,7 @@ const UpdatePasswordModal = ({ open, onClose }: Props) => {
                 <Form>
                   {fields.map((__field) => (
                     <PasswordField
-                      initialValue={formik.values}
+                      initialValues={formik.values}
                       label={__field.label}
                       name={__field.name}
                       fullWidth={true}
