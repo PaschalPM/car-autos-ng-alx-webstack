@@ -42,8 +42,8 @@ export default function MySelect({
           ),
         }}
       >
-        {options.map(({ value, text }) => (
-          <MenuItem value={value} key={value}> {text} </MenuItem>
+        {options.map(({ value, text }, idx) => (
+          <MenuItem value={value} key={idx}> {text} </MenuItem>
         ))}
       </TextField>
     </Box>

@@ -18,7 +18,7 @@ const MainErrorDialog = ({
 }: DialogType & { index: number }) => {
   return (
     <Dialog
-      open={open}
+      open={open as boolean}
       onClose={() => handleClose && handleClose(index)}
       aria-labelledby="dialog-title"
       aria-describedby="dialog-description"

@@ -13,9 +13,9 @@ export type CarAdvert = {
   description: string;
 };
 
-const formikConfig:(imagesSecuredURLs:string[])=> FormikConfig<CarAdvert> = (imagesSecuredURLs)=> ({
+const formikConfig:(initialUser: string, imagesSecuredURLs:string[])=> FormikConfig<CarAdvert> = (initialUser,imagesSecuredURLs)=> ({
   initialValues: {
-    user: "",
+    user: initialUser,
     title: "",
     brand: "",
     model: "",

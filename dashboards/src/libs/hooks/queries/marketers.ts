@@ -15,8 +15,8 @@ export const useManagerMarketersQuery = () => {
         select: (data) => {
             const users = data.data.filter(({ team_manager }) => managerProfile.id === team_manager).map((user) => ({
                 id: user.id,
-                firstname: ucfirst(user.firstname),
-                lastname: ucfirst(user.lastname),
+                firstname: ucfirst(user.first_name),
+                lastname: ucfirst(user.last_name),
                 email: user.email,
                 phoneNumber: user.phone_number,
                 username: ucfirst(user.username),
@@ -37,8 +37,8 @@ export const useManagerSearchedMarketersQuery = (q:string) => {
         select: (data) => {
             const users = data.data.filter(({ team_manager }) => managerProfile.id === team_manager).map((user) => ({
                 id: user.id,
-                firstname: ucfirst(user.firstname),
-                lastname: ucfirst(user.lastname),
+                firstname: ucfirst(user.first_name),
+                lastname: ucfirst(user.last_name),
                 email: user.email,
                 phoneNumber: user.phone_number,
                 username: ucfirst(user.username),

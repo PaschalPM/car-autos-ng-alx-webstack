@@ -1,9 +1,6 @@
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 
-import { baseColor } from "../libs/utils";
-
-
 export default function LoadingSpinner({
   condition,
   size,
@@ -24,7 +21,7 @@ export default function LoadingSpinner({
             justifyContent: "center",
           }}
         >
-          <CircularProgress size={size? size: 50} sx={{ color: baseColor }} />
+          <CircularProgress size={size? size: 50} />
         </Box>
       ) : (
         ""

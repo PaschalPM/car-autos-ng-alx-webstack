@@ -8,6 +8,7 @@ import { ModelSelect, YearSelect, CitySelect, PriceInput } from "./fields";
 import SubmitButton from "./SubmitButton";
 import { useContext } from "react";
 import viewContext from "../context";
+import useAuthUserProfile from "../../../../store/auth-user";
 
 const filterModelOptions = (
   modelOptions: (OptionType & { brandId: number })[],
@@ -34,7 +35,8 @@ const filterCityOptions = (
 };
 
 export default function Body<T>({ initialValues }: { initialValues: T }) {
-  const { brandOptions, modelOptions, yearOptions, stateOptions, cityOptions } =
+  const userProfile = useAuthUserProfile((state) => state.userProfile)
+  const {marketerOptions, brandOptions, modelOptions, yearOptions, stateOptions, cityOptions } =
     useContext(viewContext);
   const { values } = useFormikContext<CarAdvert>();
 
@@ -53,8 +55,8 @@ export default function Body<T>({ initialValues }: { initialValues: T }) {
         name={"user"}
         label="User"
         options={[
-          { text: "test-value", value: "test" },
-          { text: "test-value2", value: "test2" },
+          { text: "Myself", value: userProfile.id as string },
+          ...marketerOptions,
         ]}
       ></MySelect>
       <MyTextFieldWithValCounter

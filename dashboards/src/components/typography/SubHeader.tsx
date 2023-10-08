@@ -1,6 +1,5 @@
 import { SxProps, Theme, Typography } from "@mui/material";
 import { PropsWithChildren } from "react";
-import { baseColor } from "../../libs/utils";
 
 
 export default function SubHeader({ children, sx }: PropsWithChildren & {
