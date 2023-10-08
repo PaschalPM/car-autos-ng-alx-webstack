@@ -58,6 +58,7 @@ class UserLogin(APIView):
             httponly=True,
             max_age=max_age_seconds,
             secure=True,
+            samesite=None,
         )
 
         user.last_login = timezone.now()

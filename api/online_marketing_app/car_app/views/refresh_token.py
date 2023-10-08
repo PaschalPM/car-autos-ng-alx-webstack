@@ -10,7 +10,13 @@ class TokenRefresh(APIView):
     """This class defines a method that refreshes an access token."""
     def post(self, request):
         """This method returns a new access token"""
-        user_id, refresh_token = decode_refresh_token(request)
+
+        result = decode_refresh_token(request)
+
+        if isinstance(result, JsonResponse):
+            return result
+
+        user_id, refresh_token = result
 
         try:
             User.objects.get(id=user_id)
