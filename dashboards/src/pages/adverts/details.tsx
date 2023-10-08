@@ -64,27 +64,27 @@ export default function CarAdvertDetails() {
           maxWidth: () => (mdMatch ? "70%" : "100%"),
         }}
       >
-        <ImageSlider images={carAdverts[0].images} />
+        <ImageSlider images={carAdverts[1].images} />
         <Box>
           <Container>
             <Typography variant={mdMatch ? "h5" : "h6"} gutterBottom>
-              {carAdverts[0].title}
+              {carAdverts[1].title}
             </Typography>
-            <CreationStateInfo advert={carAdverts[0]} />
+            <CreationStateInfo advert={carAdverts[1]} />
             <Divider sx={{ my: 2, mt: 4 }} />
-            <OtherDetailedInfo advert={carAdverts[0]} />
+            <OtherDetailedInfo advert={carAdverts[1]} />
             <Divider sx={{ my: 2 }} />
-            <Typography variant="body1">{carAdverts[0].description}</Typography>
+            <Typography variant="body1">{carAdverts[1].description}</Typography>
             <Divider sx={{ my: 2 }} />
             <Stack direction="row" spacing={1} alignItems={"center"} pb={1}>
               <Link
-                href={whatsappHref(carAdverts[0].phoneNumber)}
+                href={whatsappHref(carAdverts[1].phoneNumber)}
                 target="_blank"
               >
                 <WhatsAppIcon fontSize={"large"} />
               </Link>
               <Link
-                href={emailHref(carAdverts[0].email)}
+                href={emailHref(carAdverts[1].email)}
                 target="_blank"
                 color={"secondary.main"}
               >
@@ -102,13 +102,13 @@ export default function CarAdvertDetails() {
               gutterBottom
               textAlign={"center"}
             >
-              {formatNaira(parseInt(carAdverts[0].price))}
+              {formatNaira(parseInt(carAdverts[1].price))}
             </Typography>
             <Button
               variant="outlined"
               fullWidth
               size="large"
-              onClick={() => dialNumber(carAdverts[0].phoneNumber)}
+              onClick={() => dialNumber(carAdverts[1].phoneNumber)}
             >
               Call Now
             </Button>
