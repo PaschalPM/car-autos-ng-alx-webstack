@@ -1,16 +1,15 @@
 import { useMutation } from "react-query";
-import { axiosPrivateClient } from "../../requests/@config";
+import { axiosClient } from "../../requests/@config";
 
 type LoginRequest = {
   username: string;
   password: string;
 };
-const loginRequest = (data: LoginRequest) => axiosPrivateClient.post("/login", data);
-const refreshTokenRequest = (data: {}) => axiosPrivateClient({
+const loginRequest = (data: LoginRequest) => axiosClient.post("/login", data);
+const refreshTokenRequest = (data: {}) => axiosClient({
   method: 'POST',
   url: '/refresh-token',
-  data,
-  withCredentials: true
+  data
 });
 
 export const useLoginUserMutation = () => useMutation(loginRequest);

@@ -1,7 +1,7 @@
 import { PropsWithChildren } from "react";
 import useAuthUserProfile from "../../store/auth-user";
 import useAuthJWTToken from "../../store/jwt-token";
-import jwt from "jwt-decode";
+import { extractUserProfileFromJWT } from "../../libs/utils";
 import { useEffect, useState } from "react";
 import BeforeEnterFeedback from "./BeforeEnterFeedback";
 import { useRefreshTokenMutation } from "../../libs/hooks/queries/auth";
@@ -31,36 +31,14 @@ export default function BeforeEnter({ children }: PropsWithChildren) {
         }
       );
     } else {
-      setIsAuthenticating(false)
-      setIsAuth(true)
+      setIsAuthenticating(false);
+      setIsAuth(true);
     }
   }, []);
 
   useEffect(() => {
     if (userjwttoken) {
-      const {
-        user_id,
-        first_name,
-        last_name,
-        username,
-        email,
-        created_at,
-        is_manager,
-        phone_number,
-        referral_code,
-      } = jwt(userjwttoken) as ServerUser & { user_id: string };
-      const userProfile = {
-        id: user_id,
-        username,
-        firstname: first_name,
-        lastname: last_name,
-        email,
-        createdAt: created_at,
-        isManager: is_manager,
-        phoneNumber: phone_number,
-        referralCode: referral_code,
-      };
-      setUserProfile(userProfile);
+      setUserProfile(extractUserProfileFromJWT(userjwttoken));
     }
   }, [userjwttoken]);
 

@@ -14,6 +14,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { styled } from "@mui/material/styles";
 import usePageTitleSetter from "../../libs/hooks/setPageTitle";
 import { Link } from "react-router-dom";
+import FloatingButton from "../../components/views/adverts/FloatingButton";
 import {
   useManagerMarketersQuery,
   useManagerSearchedMarketersQuery,
@@ -21,6 +22,7 @@ import {
 import SectionFeedBack from "../../components/views/SectionFeedback";
 import { debounce } from "lodash";
 import { useState } from "react";
+import { urlPath } from "../../libs/utils";
 
 const MyMarketerListItem = ({
   marketerProfile,
@@ -79,6 +81,7 @@ export default function Marketers() {
  
 
   return (
+    <>
     <Paper>
       <Container sx={{ p: 2 }}>
         <SearchTextField
@@ -120,5 +123,7 @@ export default function Marketers() {
         )}
       </Container>
     </Paper>
+    <FloatingButton urlPath={urlPath("my-marketers:new")}/>
+    </>
   );
 }

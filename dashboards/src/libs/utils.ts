@@ -1,6 +1,7 @@
 import _ from "lodash";
 import dayjs from "dayjs"
 import relativeTime from 'dayjs/plugin/relativeTime'
+import jwt from "jwt-decode";
 
 dayjs.extend(relativeTime);
 
@@ -73,6 +74,50 @@ export const contactHrefGenerator = (
 export function dialNumber(phoneNumber: string) {
   // Open the phone dialer with the specified number
   window.location.href = "tel:" + phoneNumber;
+}
+
+export const generateRandomValue = (size: number = 8) => {
+  // Generate random alphanumeric string for username and password
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+  const charactersLength = characters.length;
+  for (let i = 0; i < size; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+};
+
+export const copyToClipboard = (value: string, cb?:()=> void) => {
+  // Copy text to clipboard
+  navigator.clipboard.writeText(value);
+  cb && cb()
+};
+
+export const extractUserProfileFromJWT = (userjwttoken: string): UserValues =>{
+  const {
+    user_id,
+    first_name,
+    last_name,
+    username,
+    email,
+    created_at,
+    is_manager,
+    phone_number,
+    referral_code,
+  } = jwt(userjwttoken) as ServerUser & { user_id: string }
+
+  return {
+      id: user_id,
+      username,
+      firstname: first_name,
+      lastname: last_name,
+      email,
+      createdAt: created_at,
+      isManager: is_manager,
+      phoneNumber: phone_number,
+      referralCode: referral_code,
+    };
 }
 
 export const supportColor = "rgba(199, 184, 45, 0.10)";

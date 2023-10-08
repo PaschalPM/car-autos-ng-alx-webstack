@@ -31,7 +31,6 @@ const BeforeEnterFeedback = ({ isAuthenticating, isAuth, children }: Props) => {
             <Typography gutterBottom>
               <CircularProgress size={65} />
             </Typography>
-            <Typography variant="h6">Authenticating...</Typography>
           </Box>
         </>
       </FeedbackShell>

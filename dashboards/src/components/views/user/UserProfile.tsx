@@ -17,6 +17,7 @@ import SubHeader from "../../typography/SubHeader";
 import { Link } from "react-router-dom";
 import { humanReadableRelativeTime, urlPath } from "../../../libs/utils";
 import useLogout from "../../../libs/hooks/logout";
+import useAuthUserProfile from "../../../store/auth-user";
 
 const Item = ({ Icon, text }: { Icon: React.ReactNode; text: string }) => (
   <Box display="flex" alignItems={"center"} gap={1}>
@@ -69,6 +70,7 @@ type Props = {
 };
 
 export default function UserProfile({ userProfile, isAuth }: Props) {
+  const isAuthManager = useAuthUserProfile((state) => state.userProfile).isManager
   const handleLogout = useLogout();
   return (
     <Container disableGutters>
@@ -122,7 +124,7 @@ export default function UserProfile({ userProfile, isAuth }: Props) {
           >
             Edit Profile
           </MyLinkButton>
-          {userProfile.isManager && (
+          {isAuthManager && (
             <>
               <MyLinkButton
                 to={urlPath("my-marketers:new")}

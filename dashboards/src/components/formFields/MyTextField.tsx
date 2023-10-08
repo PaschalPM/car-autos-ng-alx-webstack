@@ -12,6 +12,7 @@ function MyTextField<T>({
   value,
   fullWidth,
   size,
+  readOnly,
 }: {
   name: string;
   label: string;
@@ -21,6 +22,7 @@ function MyTextField<T>({
   required?: boolean;
   value?: string;
   fullWidth?: boolean;
+  readOnly?: boolean;
   sx?: SxProps<Theme> | undefined;
   size?: "small" | "medium";
 }) {
@@ -30,6 +32,9 @@ function MyTextField<T>({
         return (
           <TextField
             {...field}
+            InputProps={{
+              readOnly,
+            }}
             variant="outlined"
             size={size ? size : "small"}
             label={label}

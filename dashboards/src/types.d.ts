@@ -9,7 +9,7 @@ type ServerUser = {
   referral_code: string | null;
   created_at: string;
   team_manager: string | null;
-}
+};
 
 type UserValues = {
   id?: string;
@@ -25,13 +25,14 @@ type UserValues = {
   teamManager?: string | null;
 };
 
+type AlertSeverity = "error" | "success" | "warning" | "info";
 type Prompt = {
   isOpen: boolean;
   message: string;
 };
 
 type Alert = Prompt & {
-  severity?: "error" | "success" | "warning";
+  severity?: AlertSeverity;
   handleClose?: () => void;
 };
 
@@ -76,23 +77,22 @@ type OptionType = {
 
 type BrandAndStateServerDataType = {
   id: number;
-  name: string
-}
+  name: string;
+};
 
 type ModelServerDataType = {
   id: number;
   brand: number;
-  name: string
-}
+  name: string;
+};
 
 type YearServerDataType = {
   id: number;
-  year: number
-}
+  year: number;
+};
 
 type CityServerDataType = {
   id: number;
   state: number;
-  name: string
-}
-
+  name: string;
+};
