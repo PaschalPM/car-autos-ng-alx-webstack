@@ -11,6 +11,7 @@ import MyAlert from "../components/prompts/MyAlert";
 import { useNavigate } from "react-router-dom";
 import useAuthJWTToken from "../store/jwt-token";
 import { useLoginUserMutation } from "../libs/hooks/queries/auth";
+import useAuthUserProfile from "../store/auth-user";
 
 
 const FormContainer = styled(Paper)({
@@ -33,6 +34,7 @@ type Values = {
 const Login = () => {
   const openAlert = useAppStore((state) => state.openAlert);
   const resetAlert = useAppStore((state) => state.resetAlert);
+  const setIsLoggedIn = useAuthUserProfile((state) => state.setIsLoggedIn)
   const setUserJWTToken = useAuthJWTToken((state) => state.setUserJWTToken);
   const navigate = useNavigate();
   const { mutate } = useLoginUserMutation();
@@ -52,7 +54,9 @@ const Login = () => {
           openAlert(
             "Logged in successfully",
             () => {
+              setIsLoggedIn(true)
               setUserJWTToken(data.data.access);
+              // set refresh token to local storage
               resetAlert();
               navigate("/dashboard/");
             },

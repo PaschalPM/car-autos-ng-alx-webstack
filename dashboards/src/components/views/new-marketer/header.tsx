@@ -22,16 +22,16 @@ const ResetButton = () => {
   );
 };
 
-const PostAdvertTitle = () => (
+const AddMarketerTitle = () => (
   <Typography variant="h6" textAlign={"center"} py={1}>
-    Post Ad
+    Add User
   </Typography>
 );
 
 export default function Header() {
   return (
     <Paper sx={{ position: "relative", mb: 2 }}>
-      <PostAdvertTitle />
+      <AddMarketerTitle />
       <ResetButton />
     </Paper>
   );

@@ -1,6 +1,5 @@
-import { FormikConfig } from "formik";
+import { FormikConfig, FormikHelpers } from "formik";
 import * as Yup from "yup";
-
 
 export type CarAdvert = {
   user: string;
@@ -13,7 +12,13 @@ export type CarAdvert = {
   description: string;
 };
 
-const formikConfig:(initialUser: string, imagesSecuredURLs:string[])=> FormikConfig<CarAdvert> = (initialUser,imagesSecuredURLs)=> ({
+const formikConfig: (
+  initialUser: string,
+  onSubmit: (
+    values: CarAdvert,
+    formikHelpers: FormikHelpers<CarAdvert>
+  ) => void | Promise<any>
+) => FormikConfig<CarAdvert> = (initialUser, onSubmit) => ({
   initialValues: {
     user: initialUser,
     title: "",
@@ -32,14 +37,9 @@ const formikConfig:(initialUser: string, imagesSecuredURLs:string[])=> FormikCon
     state: Yup.string().required(),
     city: Yup.string().required(),
     price: Yup.string().required(),
-    description: Yup.string().min(50).max(350).required()
+    description: Yup.string().min(50).max(350).required(),
   }),
-  onSubmit(values, formikHelpers) {
-    const priceInNumber: number = parseInt(values.price.replace(/,/g, ''))
-    console.log(values, formikHelpers);
-    console.log(imagesSecuredURLs)
-    console.log(priceInNumber)
-  },
+  onSubmit,
 });
 
 export default formikConfig;

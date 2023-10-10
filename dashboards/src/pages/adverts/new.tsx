@@ -1,6 +1,6 @@
 import Container from "@mui/material/Container";
 import usePageTitleSetter from "../../libs/hooks/setPageTitle";
-import { Formik, Form, FormikProps } from "formik";
+import { Formik, Form, FormikProps, FormikHelpers } from "formik";
 import Header from "../../components/views/new-advert/header";
 import Body from "../../components/views/new-advert/Body";
 import formikConfig, {
@@ -20,9 +20,19 @@ export default function AddAdvert() {
   const imagesSecuredURLs: string[] = acceptedImages.map(
     (img) => img.securedURL
   );
+
+  const handleSubmit: (
+    values: CarAdvert,
+    formikHelpers: FormikHelpers<CarAdvert>
+  ) => void | Promise<any> = (values, formikHelpers) => {
+    const priceInNumber: number = +values.price.replace(/,/g, "");
+    console.log(values, formikHelpers);
+    console.log(imagesSecuredURLs);
+    console.log(priceInNumber);
+  }
   return (
     <ViewProvider>
-      <Formik {...formikConfig(userId as string, imagesSecuredURLs)}>
+      <Formik {...formikConfig(userId as string, handleSubmit)}>
         {({ initialValues }: FormikProps<CarAdvert>) => (
           <Container maxWidth={"sm"} disableGutters>
             <Form>

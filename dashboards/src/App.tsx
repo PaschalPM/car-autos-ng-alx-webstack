@@ -6,6 +6,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import MyErrorDialog from "./components/MyErrorDialog";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import { useAxiosInceptor } from "./libs/requests/@config";
 
 const darkTheme = createTheme({
   palette: {
@@ -23,6 +24,7 @@ const darkTheme = createTheme({
 const queryClient = new QueryClient();
 
 export default function App() {
+  useAxiosInceptor()
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={darkTheme}>

@@ -8,15 +8,38 @@ export const cloudinaryURL = `https://api.cloudinary.com/v1_1/${cloudName}/image
 
 export const axiosClient = axios.create({
   baseURL: baseURL ?? "http://localhost:5500/api",
-  headers:{ 
-    'Content-Type': 'application/json'
-  }
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
-export const axiosPrivateClient = axios.create({
+const axiosPrivateClient = axios.create({
   baseURL: baseURL ?? "http://localhost:5500/api",
-  headers:{ 
-    'Content-Type': 'application/json'
+  headers: {
+    "Content-Type": "application/json",
   },
-  withCredentials: true
 });
+
+export const useAxiosInceptor = () => {
+  axiosClient.interceptors.request.use(async (config) => {
+    if (!config.url?.includes("/refresh-data")) {
+      const refreshToken = localStorage.getItem("access-token");
+      if (refreshToken) {
+        try {
+          const res = await axiosPrivateClient({
+            method: "POST",
+            url: "/refresh-data",
+            headers: {
+              Authorization: `Bearer ${refreshToken}`,
+            },
+          });
+          const data = (await res.data) as { access: string };
+          config.headers.set("Authorization", `Bearer ${data.access}`);
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    }
+    return config;
+  });
+};
