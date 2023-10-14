@@ -1,3 +1,5 @@
+"""This module defines the class MarketerRegisterationView."""
+from rest_framework.views import APIView
 from rest_framework.permissions import IsAdminUser
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
