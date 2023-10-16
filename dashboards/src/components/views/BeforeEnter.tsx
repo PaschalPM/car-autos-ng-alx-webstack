@@ -16,30 +16,41 @@ export default function BeforeEnter({ children }: PropsWithChildren) {
 
   useEffect(() => {
     if (!userjwttoken) {
-      mutate(
-        {},
-        {
-          onSuccess: (data) => {
-            setUserJWTToken((data.data as { access: string }).access);
-            setIsAuthenticating(false);
-            setIsAuth(true);
+      const refreshToken = localStorage.getItem("refresh-token");
+      if (refreshToken) {
+        mutate(
+          {
+            refresh: refreshToken,
           },
-          onError: () => {
-            setIsAuthenticating(false);
-            setIsAuth(false);
-          },
-        }
-      );
+          {
+            onSuccess: (data) => {
+              setUserJWTToken((data.data as { access: string }).access);
+              setIsAuthenticating(false);
+              setIsAuth(true);
+            },
+            onError: (reason) => {
+              setIsAuthenticating(false);
+              setIsAuth(false);
+              console.log(reason);
+            },
+          }
+        );
+      } else {
+        setIsAuthenticating(false);
+        setIsAuth(false);
+      }
     } else {
       setIsAuthenticating(false);
       setIsAuth(true);
     }
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
     if (userjwttoken) {
       setUserProfile(extractUserProfileFromJWT(userjwttoken));
     }
+    // eslint-disable-next-line
   }, [userjwttoken]);
 
   return (

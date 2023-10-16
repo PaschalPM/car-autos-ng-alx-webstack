@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import useAuthJWTToken from "../store/jwt-token";
 import { useLoginUserMutation } from "../libs/hooks/queries/auth";
 import useAuthUserProfile from "../store/auth-user";
+import { isAxiosError } from "axios";
 
 
 const FormContainer = styled(Paper)({
@@ -49,6 +50,7 @@ const Login = () => {
       password: Yup.string().min(8).required(),
     }),
     onSubmit: (values, formikHelpers) => {
+      
       mutate(values, {
         onSuccess: (data) => {
           openAlert(
@@ -56,7 +58,8 @@ const Login = () => {
             () => {
               setIsLoggedIn(true)
               setUserJWTToken(data.data.access);
-              // set refresh token to local storage
+              localStorage.setItem("refresh-token", data.data.refrsh)
+              console.log(data)
               resetAlert();
               navigate("/dashboard/");
             },
@@ -65,7 +68,7 @@ const Login = () => {
         },
         onError: (reason) => {
           openAlert(
-            String(reason),
+            String(isAxiosError(reason)? reason.message: "Error occured"),
             () => {
               resetAlert();
               formikHelpers.setSubmitting(false);
