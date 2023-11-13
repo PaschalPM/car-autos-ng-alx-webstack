@@ -42,9 +42,10 @@ const Login = () => {
 
   const formikConfig: FormikConfig<Values> = {
     initialValues: {
-      username: "pasma",
-      // password: "",
-      password: "frontend-dev123",
+      username: "",
+      // username: "pasma",
+      password: "",
+      // password: "frontend-dev123",
     },
     validationSchema: Yup.object({
       username: Yup.string().required(),
