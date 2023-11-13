@@ -96,3 +96,11 @@ type CityServerDataType = {
   state: number;
   name: string;
 };
+
+type RecentActivity = {
+  id: string;
+  activity_type: string;
+  activity_details: string;
+  user: string;
+  timestamp: string;
+};

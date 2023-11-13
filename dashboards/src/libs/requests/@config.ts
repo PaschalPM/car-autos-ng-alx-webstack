@@ -32,6 +32,7 @@ export const useAxiosInceptor = () => {
             headers: {
               Authorization: `Bearer ${refreshToken}`,
             },
+            data:{refresh: refreshToken}
           });
           const data = (await res.data) as { access: string };
           config.headers.set("Authorization", `Bearer ${data.access}`);
