@@ -16,8 +16,8 @@ class SearchAdvert(APIView):
     @extend_schema(
         request={"application/json": {"example":
                                       {"search": "query string",
-                                       "page": "optional (int)",
-                                       "page_size": "optional (int)"}}},
+                                       "page": 1,
+                                       "page_size": 1}}},
         responses={200: {"example": {'total_adverts': 1,
                                      'total_pages': 1,
                                      'previous_page': None,
