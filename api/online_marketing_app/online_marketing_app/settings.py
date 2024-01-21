@@ -31,7 +31,7 @@ SECRET_KEY = getenv('PROJECT_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'stanley6453.pythonanywhere.com', 'carAutoNG.pythonanywhere.com']
+ALLOWED_HOSTS = ['stanley6453.pythonanywhere.com', 'carAutoNG.pythonanywhere.com']
 
 
 # Application definition
@@ -55,12 +55,19 @@ INSTALLED_APPS = [
     'city',
     'image',
     'user_activity',
+    'drf_spectacular',
 ]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'CarAutos service API',
+    'COMPONENT_SPLIT_REQUEST': True
 }
 
 SIMPLE_JWT = {
