@@ -101,7 +101,7 @@ export default function Marketers() {
             <>
               <List>
                 {searchedMarketers?.map((marketerProfile) => (
-                  <MyMarketerListItem marketerProfile={marketerProfile} />
+                  <MyMarketerListItem marketerProfile={marketerProfile} key={marketerProfile.id} />
                 ))}
               </List>
             </>
@@ -115,7 +115,7 @@ export default function Marketers() {
             <>
               <List>
                 {marketers?.map((marketerProfile) => (
-                  <MyMarketerListItem marketerProfile={marketerProfile} />
+                  <MyMarketerListItem marketerProfile={marketerProfile} key={marketerProfile.id} />
                 ))}
               </List>
             </>

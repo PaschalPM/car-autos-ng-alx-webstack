@@ -6,9 +6,9 @@ type LoginRequest = {
   password: string;
 };
 const loginRequest = (data: LoginRequest) => axiosClient.post("/login", data);
-const refreshTokenRequest = (data: {}) => axiosClient({
+const refreshTokenRequest = (data: { refresh: string }) => axiosClient({
   method: 'POST',
-  url: '/refresh-token',
+  url: '/token/refresh',
   data
 });
 

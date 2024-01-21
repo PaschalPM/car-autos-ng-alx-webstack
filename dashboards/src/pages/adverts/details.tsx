@@ -68,7 +68,7 @@ export default function CarAdvertDetails() {
         <Box>
           <Container>
             <Typography variant={mdMatch ? "h5" : "h6"} gutterBottom>
-              {carAdverts[1].title}
+              { carAdverts[1].title }
             </Typography>
             <CreationStateInfo advert={carAdverts[1]} />
             <Divider sx={{ my: 2, mt: 4 }} />

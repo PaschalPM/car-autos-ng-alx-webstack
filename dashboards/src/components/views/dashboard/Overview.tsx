@@ -12,43 +12,61 @@ import { Link as ReactLink } from "react-router-dom";
 import { urlPath } from "../../../libs/utils";
 import SubHeader from "../../typography/SubHeader";
 import useAuthUserProfile from "../../../store/auth-user";
+import { useCallback, useState } from "react";
+import { useManagerMarketersQuery } from "../../../libs/hooks/queries/marketers";
 
 type OverviewType = {
   label: string;
   num: number;
   link: string;
+  state?: {isAdActive: boolean};
   icon: React.ReactNode;
 };
-const overviewElements: OverviewType[] = [
+const overviewElements = (
+  mktrsNum: number,
+  adNum: number,
+  inActiveAdNum: number
+): OverviewType[] => [
   {
     label: "Total Marketers",
-    num: 5,
+    num: mktrsNum,
     link: urlPath("My Marketers"),
     icon: <BsFillPeopleFill size={24} />,
   },
   {
     label: "Total Adverts",
-    num: 200,
+    num: adNum,
     link: urlPath("My Adverts"),
     icon: <RiAdvertisementFill size={24} />,
+    state: {isAdActive: true}
   },
   {
     label: "Inactive Adverts",
-    num: 100,
+    num: inActiveAdNum,
     link: urlPath("My Adverts"),
     icon: <RiAdvertisementFill size={24} />,
+    state: {isAdActive: false}
   },
 ];
 
-const overviewElementsGenerator = (
-  isManager: boolean | undefined
-): OverviewType[] => {
-  if (isManager) return overviewElements;
-  return overviewElements.slice(1);
-};
-
 export default function Overview() {
+  const {data:marketers, isLoading: isMarketersLoading} = useManagerMarketersQuery()
   const { isManager } = useAuthUserProfile((state) => state.userProfile);
+
+  const [adNum, setAdNum] = useState(0);
+  const [inActiveAdNum, setInActiveAdNum] = useState(0);
+
+  const overviewElementsGenerator = useCallback(
+    (isManager: boolean | undefined): OverviewType[] => {
+      const mktrNum = isMarketersLoading ? 0 : marketers ? marketers.length : 0
+      const overviewElems = overviewElements(mktrNum, 0, inActiveAdNum);
+      if (isManager) return overviewElems;
+      return overviewElems.slice(1);
+    },
+    [marketers, isMarketersLoading, adNum, inActiveAdNum]
+  );
+
+
   return (
     <Card sx={{ marginBottom: 2, width: "100%" }}>
       <CardContent
@@ -72,7 +90,7 @@ export default function Overview() {
           }}
         >
           {overviewElementsGenerator(isManager as boolean).map(
-            ({ label, num, link, icon }) => (
+            ({ label, num, link, icon, state }) => (
               <Paper
                 key={label}
                 elevation={2}
@@ -128,6 +146,7 @@ export default function Overview() {
                         fontWeight: "600",
                       }}
                       to={link}
+                      state={state}
                     >
                       view all
                     </Link>

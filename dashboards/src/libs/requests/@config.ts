@@ -22,16 +22,17 @@ const axiosPrivateClient = axios.create({
 
 export const useAxiosInceptor = () => {
   axiosClient.interceptors.request.use(async (config) => {
-    if (!config.url?.includes("/refresh-data")) {
-      const refreshToken = localStorage.getItem("access-token");
+    if (!config.url?.includes("/token/refresh")) {
+      const refreshToken = localStorage.getItem("refresh-token");
       if (refreshToken) {
         try {
           const res = await axiosPrivateClient({
             method: "POST",
-            url: "/refresh-data",
+            url: "/token/refresh",
             headers: {
               Authorization: `Bearer ${refreshToken}`,
             },
+            data:{refresh: refreshToken}
           });
           const data = (await res.data) as { access: string };
           config.headers.set("Authorization", `Bearer ${data.access}`);

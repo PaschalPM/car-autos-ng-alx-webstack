@@ -6,6 +6,8 @@ import IconButton from "@mui/material/IconButton";
 import Input from "@mui/material/Input";
 import SearchIcon from "@mui/icons-material/Search";
 import useAppStore from "../../../store/app";
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 type ChipType = {
   color: "primary" | "warning";
@@ -34,6 +36,14 @@ const MyChip = ({ label, color, isAdActive, handleClick }: ChipType) => {
 };
 export default function FirstBar() {
   const setViewActiveAd = useAppStore((state) => state.setViewActiveAd);
+  const state = useLocation().state as {isAdActive: boolean}
+
+  useEffect(()=>{
+    if (state){
+      setViewActiveAd(state.isAdActive)
+    }
+  },[state, setViewActiveAd])
+  
   return (
     <Stack
       direction={"row"}

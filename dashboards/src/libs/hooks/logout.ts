@@ -10,6 +10,7 @@ const useLogout = (navigateTo: string = '/') => {
     return () =>{
         resetUserProfile()
         resetUserJWTToken()
+        localStorage.removeItem("refresh-token")
         navigate(navigateTo)
     }
 }

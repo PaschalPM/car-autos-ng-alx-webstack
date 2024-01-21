@@ -4,15 +4,15 @@ import { ucfirst, humanReadableRelativeTime } from "../utils";
 
 export type RecentActivity = {
   id: string;
-  activityType: string;
-  activityDetails: string;
+  activity_type: string;
+  activity_details: string;
   user: string;
   timestamp: string;
 };
 const createRandomActivities: () => RecentActivity = () => ({
   id: faker.string.uuid(),
-  activityType: ucfirst(faker.helpers.arrayElement(["create", "update", "delete", "login", "logout"])),
-  activityDetails: faker.string.sample(10),
+  activity_type: ucfirst(faker.helpers.arrayElement(["create", "update", "delete", "login", "logout"])),
+  activity_details: faker.string.sample(10),
   user: faker.internet.userName(),
   timestamp: humanReadableRelativeTime(faker.date.anytime().toISOString()),
 });
