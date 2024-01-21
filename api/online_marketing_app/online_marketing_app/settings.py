@@ -31,7 +31,7 @@ SECRET_KEY = getenv('PROJECT_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['stanley6453.pythonanywhere.com', 'carAutoNG.pythonanywhere.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localgost', 'stanley6453.pythonanywhere.com', 'carAutoNG.pythonanywhere.com']
 
 
 # Application definition
